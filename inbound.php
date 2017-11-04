@@ -82,7 +82,7 @@ if (isset($data['command'])) {
         $item = filter_var($data['text'], FILTER_SANITIZE_STRING);
         $addType = filter_var(substr($data['command'],  4, strlen($data['command'])), FILTER_SANITIZE_STRING);
 
-        // Insert the new prescription into the database
+        // Add a new item to the database
         if ($insert_stmt = $mysqli->prepare("INSERT INTO " . $addType . " (item, dateAdded) VALUES(?, UNIX_TIMESTAMP())")) {
             $insert_stmt->bind_param('s', $data['text']);
 
@@ -99,10 +99,10 @@ if (isset($data['command'])) {
     else if (substr($data['command'],  0, 9 ) == "/complete") {
         $addType = filter_var(substr($data['command'],  9, strlen($data['command'])), FILTER_SANITIZE_STRING);
 
-        // Insert the new prescription into the database
+        // Mark all items as completed
         if ($insert_stmt = $mysqli->prepare("UPDATE " . $addType . " SET dateCompleted = UNIX_TIMESTAMP() WHERE dateCompleted IS NULL")) {
 
-            // Execute the prepared query.
+            // Execute the prepared query
             if (!$insert_stmt->execute()) {
                 echo '{"response_type": "in_channel", "text": "There was an error clearing the ' . $addType . '. Error: ' . $mysqli->error . '"}';
             } else {
@@ -115,27 +115,29 @@ if (isset($data['command'])) {
     else if (substr($data['command'],  0, 4 ) == "/get") {
         $addType = filter_var(substr($data['command'],  4, strlen($data['command'])), FILTER_SANITIZE_STRING);
 
+        // Find all items that are not completed (have a completed date)
         $prep_stmt = "SELECT item, dateAdded FROM " . $addType . " WHERE dateCompleted IS NULL ORDER BY dateAdded";
         $stmt = $mysqli->prepare($prep_stmt);
 
+        // Execute the prepared query
         if ($stmt) {
             $stmt->execute();
             $stmt->store_result();
 
-            // get variables from result.
+            // Get variables from result
             $stmt->bind_result($item, $dateAdded);
 
+            // Make sure we have more than 1 returned result
             if ($stmt->num_rows > 0) {
                 $response = '|Item|Date Added|\n|:------------|:------------|\n';
 
-                //Found the count!
+                // Retreive the items from the query
                 while ($stmt->fetch()) {
                     $response = $response . '|' . $item . '|' . date('F jS', $dateAdded) . '|\n';
                 }
 
                 echo '{"response_type": "in_channel", "text": "' . $response . '"}';
             } else if ($stmt->num_rows == 0) {
-                //echo '{"response_type": "in_channel", "text": "Looks like there are no items!"}';
                 echo '{"response_type": "in_channel", "text": "Looks like there are no items!"}';
             } else {
                 echo '{"response_type": "in_channel", "text": "There was an error getting the list of ' . $addType . ' from the server.\nError: ' . $mysqli->error . '\nResponse: ' . $response . '"}';
@@ -147,37 +149,42 @@ if (isset($data['command'])) {
 
     }
     else if (substr($data['command'],  0, 5 ) == "clear") {
-        $addType = filter_var(substr($data['command'],  5, strlen($data['command'])), FILTER_SANITIZE_STRING);
+		// Clean the input from FE
+		$addType = filter_var(substr($data['command'],  5, strlen($data['command'])), FILTER_SANITIZE_STRING);
 
-        //Update the patient notes
-        if ($update_stmt = $mysqli->prepare("UPDATE ".$addType." SET dateCompleted = UNIX_TIMESTAMP() WHERE id = ?")) {
-            $update_stmt->bind_param('i', $data['id']);
+		// Mark a specific item as completed
+		if ($update_stmt = $mysqli->prepare("UPDATE ".$addType." SET dateCompleted = UNIX_TIMESTAMP() WHERE id = ?")) {
+			$update_stmt->bind_param('i', $data['id']);
 
-            // Execute the prepared query.
-            if (!$update_stmt->execute()) {
-                echo "Error: ".$mysqli->error;
-            } else {
-                print_r($data);
-            }
-        } else {
-            echo "Error: ".$mysqli->error;
-        }
+			// Execute the prepared query
+			if (!$update_stmt->execute()) {
+				// If there's nothing to execute, looks like we had a problem
+				echo "Error: ".$mysqli->error;
+			} else {
+				// Success! Return this data
+				print_r($data);
+			}
+		} else {
+			// If there's nothing to execute, looks like we had a problem
+			echo "Error: ".$mysqli->error;
+		}
     }
+	// TODO: Convert this to an object
     else if ($data['command'] == "toggleLights") {
         $curlData = '{"on":'.$data['on'].'}';
 
         $ch = curl_init();
 
-        //set the url, number of POST vars, POST data
+        // Set the url, number of POST vars, POST data
         curl_setopt($ch, CURLOPT_URL, "http://192.168.20.152/api/IKyFaCiLS7o2fIXwTi1nt12mJfN7FxiJD48J6oRS/groups/0/action");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $curlData);
 
-        //Convert the string of data to an array
+        // Convert the string of data to an array
         $hueResult = curl_exec($ch);
 
-        //close connection
+        // Close cURL connection
         curl_close($ch);
 
         $returnedResult = 0;
@@ -187,19 +194,20 @@ if (isset($data['command'])) {
 
         echo $returnedResult;
     }
+	// TODO: Convert this to an object
     else if ($data['command'] == 'lightsState') {
         $ch = curl_init();
 
-        //set the url, number of POST vars, POST data
+        // Set the url, number of POST vars, POST data
         curl_setopt($ch, CURLOPT_URL, "http://192.168.20.152/api/IKyFaCiLS7o2fIXwTi1nt12mJfN7FxiJD48J6oRS/lights");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
         $hueResult = curl_exec($ch);
 
-        //Convert the string of data to an array
+        // Convert the string of data to an array
         $hueData = json_decode($hueResult, true);
 
-        //close connection
+        // Close cURL connection
         curl_close($ch);
 
         $lightOn = 0;
@@ -250,16 +258,7 @@ if (isset($data['command'])) {
     }
     else if ($data['command'] == 'getPhoto') {
 
-        // Set the text if we have a previous photo
-        if ($_SESSION['lastLocation']) {
-            $lastPhoto = ' WHERE id NOT IN '.implode($_SESSION['lastLocation'], ", ");
-        } else {
-            $_SESSION['lastLocation'] = [];
-            $lastPhoto = "";
-        }
-
         // Prepare the MySQL statement
-        //$prep_stmt = "SELECT path, location, date_taken FROM images".$lastPhoto." ORDER BY RAND() LIMIT 1";
         $prep_stmt = "CALL getPhoto()";
         $stmt = $mysqli->prepare($prep_stmt);
 
@@ -272,14 +271,6 @@ if (isset($data['command'])) {
             // Get variables from result.
             $stmt->bind_result($path, $location, $date_taken);
             $stmt->fetch();
-
-            // Remember the last location
-            array_push($_SESSION['lastLocation'], $location);
-
-            // Check if this is the 10th entry
-            if (count($_SESSION['lastLocation']) > 10) {
-                array_shift($_SESSION['lastLocation']);
-            }
 
             // Convert the DB date to a readable format
             $photoDate = new DateTime($date_taken);
