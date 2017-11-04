@@ -104,53 +104,55 @@ if (isset($data['command'])) {
     }
 	// TODO: Convert this to an object
     else if ($data['command'] == "toggleLights") {
-        $curlData = '{"on":'.$data['on'].'}';
 
-        $ch = curl_init();
+		// Create new cURL object
+		$ch = new Curl();
 
-        // Set the url, number of POST vars, POST data
-        curl_setopt($ch, CURLOPT_URL, "http://192.168.20.152/api/IKyFaCiLS7o2fIXwTi1nt12mJfN7FxiJD48J6oRS/groups/0/action");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $curlData);
+		// Execute the cURL request by setting the cURL options: url, # of POST vars, POST data
+		$hue_result = $ch->execute(array (
+			CURLOPT_URL => "http://192.168.20.152/api/IKyFaCiLS7o2fIXwTi1nt12mJfN7FxiJD48J6oRS/groups/0/action",
+			CURLOPT_RETURNTRANSFER => TRUE,
+			CURLOPT_CUSTOMREQUEST => "PUT",
+			CURLOPT_POSTFIELDS => '{"on":'.$data['on'].'}'
+		));
 
-        // Convert the string of data to an array
-        $hueResult = curl_exec($ch);
+		// TODO: Check to make sure that the cURL request was a success. Otherwise we are just trusting the FE...
+		// Check the state of the lights
+        if ($data['on'] == "true") {
+			$returned_result = 1;
+		} else {
+			$returned_result = 0;
+		}
 
-        // Close cURL connection
-        curl_close($ch);
-
-        $returnedResult = 0;
-
-        if ($data['on'] == "true")
-            $returnedResult = 1;
-
-        echo $returnedResult;
+		// Return the state of the lights
+        echo $returned_result;
     }
 	// TODO: Convert this to an object
     else if ($data['command'] == 'lightsState') {
-        $ch = curl_init();
 
-        // Set the url, number of POST vars, POST data
-        curl_setopt($ch, CURLOPT_URL, "http://192.168.20.152/api/IKyFaCiLS7o2fIXwTi1nt12mJfN7FxiJD48J6oRS/lights");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		// Create new cURL object
+		$ch = new Curl();
 
-        $hueResult = curl_exec($ch);
+		// Execute the cURL request by setting the cURL options: url, # of POST vars, POST data
+		$hue_result = $ch->execute(array (
+			CURLOPT_URL => "http://192.168.20.152/api/IKyFaCiLS7o2fIXwTi1nt12mJfN7FxiJD48J6oRS/lights",
+			CURLOPT_RETURNTRANSFER => TRUE
+		));
 
         // Convert the string of data to an array
-        $hueData = json_decode($hueResult, true);
+        $hue_data = json_decode($hue_result, true);
 
-        // Close cURL connection
-        curl_close($ch);
+		// Initalize the lights to off
+        $light_on = 0;
 
-        $lightOn = 0;
-
+		// Loop through all lights to see if any of them are on
         for ($i = 1; $i <= 5; $i++) {
-            if ($hueData[$i]['state']['on'] == 1)
-                $lightOn = 1;
+            if ($hue_data[$i]['state']['on'] == 1)
+                $light_on = 1;
         }
 
-        echo $lightOn;
+		// Return the lights state
+        echo $light_on;
     }
     else if (substr($data['command'], 0, 8 ) == "retrieve") {
         $addType = strtolower(filter_var(substr($data['command'], 8, strlen($data['command'])), FILTER_SANITIZE_STRING));
