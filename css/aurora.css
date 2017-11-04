@@ -1,0 +1,288 @@
+/*
+    Colour Scheme: https://coolors.co/05668d-028090-00a896-02c39a-f0f3bd
+*/
+
+:root {
+    --color1: #05668D;
+    --color2: #028090;
+    --color3: #00A896;
+    --color4: #02C39A;
+    --color5: #F0F3BD;
+}
+
+body {
+    width: 1024px;
+    height: 1138px;
+    font-family: 'Open Sans', serif;
+}
+
+.backgroundTop {
+    width: 1024px;
+    height: 50%;
+    background-color: #028090;
+}
+
+.backgroundTopSummary {
+    position: absolute;
+    top: 350px;
+    width: 60%;
+    padding-left: 50px;
+    text-shadow: 2px 2px 2px #05668D;
+    z-index: 10;
+}
+
+.topSummary {
+    height: 120px;
+}
+
+.bigClock {
+    width: 50%;
+    float: left;
+    font-size: 90px;
+    height: 100%;
+}
+
+.bigDate {
+    font-size: 40px;
+}
+
+.bigWeather {
+    font-size: 30px;
+    width: 50%;
+    float: left;
+    height: 100%;
+    padding-top: 15px
+}
+
+.backgroundRefresh {
+    position: absolute;
+    top: 515px;
+    left: 970px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    text-shadow: 2px 2px 2px #05668D;
+    z-index: 10;
+}
+
+.backgroundImage {
+    position: absolute;
+    top: 0;
+    width: 1024px;
+    height: 569px;
+}
+
+.sunriseSunset {
+    font-size: 15px;
+    color: #F0F3BD;
+    padding-top: 5px;
+}
+
+.backgroundBottom {
+    width: 1024px;
+    height: 50%;
+    background-color: #028090;
+}
+
+.leftPane {
+    width: 20%;
+    height: 100%;
+    background-color: #05668D;
+    float: left;
+}
+
+.mainPane {
+    width: 80%;
+    height: 100%;
+    background-color: #028090;
+    float: left;
+    position: relative;
+}
+
+.weatherIcon {
+    font-size: 50px;
+    float: left;
+    color: #F0F3BD;
+}
+
+.bootstrapAlerts {
+    position: fixed;
+    width: 60%;
+    top: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.sunriseSunsetIcon {
+    font-size: 20px;
+    color: #F0F3BD;
+    padding-right: 10px;
+}
+
+.topWeatherIcon {
+    font-size: 40px;
+    float: left;
+    color: #F0F3BD;
+    padding-right: 10px;
+}
+
+.smallWeatherIcon {
+    font-size: 15px;
+    padding-right: 10px;
+}
+
+.info {
+    height: 35%;
+    position: relative;
+    display: block;
+}
+
+.weatherDetail {
+    font-size: 15px;
+    height: 60%;
+    width: 100%;
+    display: inline-block;
+}
+
+.timeHeader {
+    height: 7%;
+    padding-top: 5px;
+}
+
+.timeHeaderText {
+    font-size: 20px;
+    text-align: center;
+    margin: auto;
+}
+
+.temperature {
+    width: 60%;
+    float: right;
+    font-size: 26px;
+    padding-left: 5px;
+    color: #F0F3BD;
+}
+
+.summary {
+    height: 75%;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+.today {
+    height: 50%;
+    background-color: #05668D;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 15px;
+}
+
+.tomorrow {
+    height: 50%;
+    background-color: #00A896;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 15px;
+}
+
+.rain {
+    width: 50%;
+    float: left;
+}
+
+.wind {
+    width: 50%;
+    float: right;
+}
+
+p {
+    color: #F0F3BD;
+    margin: 0;
+    padding: 0;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+    color: #F0F3BD;
+}
+
+.summaryList {
+    color: #F0F3BD;
+    margin: 0;
+    padding: 10px;
+    display: block;
+}
+
+.weatherDateHeader {
+    padding-bottom: 10px;
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+.todoList {
+    height: 90%;
+    width: 33%;
+    background-color: #028090;
+    float: left;
+    padding: 10px;
+}
+
+.headlineList {
+    height: 90%;
+    width: 33%;
+    background-color: #00A896;
+    float: left;
+    padding: 10px;
+}
+
+.calendar {
+    height: 90%;
+    width: 34%;
+    background-color: #028090;
+    float: left;
+    padding: 10px;
+}
+
+.footer {
+    height: 10%;
+    width: 100%;
+    background-color: #05668D;
+    bottom: 0px;
+    position: absolute;
+}
+
+.friendlySummary {
+    height: 100%;
+    width: 90%;
+    padding: 10px;
+    float: left;
+}
+
+.lights {
+    height: 100%;
+    width: 10%;
+    background-color: #00A896;
+    float: left;
+}
+
+.lightSwitchImage {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    /*
+        left: 0;
+        right: 0;
+    */
+}
+
+.friendlySummaryText {
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+.celsiusIcon {
+    font-size: 27px;
+}
