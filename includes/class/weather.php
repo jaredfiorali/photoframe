@@ -21,12 +21,12 @@ class Weather {
         $this->clock = $weather_data["time"];
         $this->summary = strtolower($weather_data["summary"]);
         $this->icon = self::setIcon($weather_data["icon"], 1);
-        $this->precipProbability = ($weather_data["precipProbability"])*100;
-        $this->temperatureMin = round($weather_data["temperatureMin"]);
-        $this->temperatureMax = round($weather_data["temperatureMax"]);
-        $this->apparentTemperatureMin = round($weather_data["apparentTemperatureMin"]);
-        $this->apparentTemperatureMax = round($weather_data["apparentTemperatureMax"]);
-        $this->windSpeed = round($weather_data["windSpeed"]);
+        $this->precip_probability = ($weather_data["precipProbability"])*100;
+        $this->temperature_min = round($weather_data["temperatureMin"]);
+        $this->temperature_max = round($weather_data["temperatureMax"]);
+        $this->apparent_temperature_min = round($weather_data["apparentTemperatureMin"]);
+        $this->apparent_temperature_max = round($weather_data["apparentTemperatureMax"]);
+        $this->wind_speed = round($weather_data["windSpeed"]);
         $this->sunrise = date('g:iA', $weather_data["sunriseTime"]);
         $this->sunset = date('g:iA', $weather_data["sunsetTime"]);
     }

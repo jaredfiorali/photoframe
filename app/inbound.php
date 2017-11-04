@@ -239,63 +239,63 @@ if (isset($data['command'])) {
         curl_setopt($ch, CURLOPT_HEADEROPT, "Accept-Encoding: gzip");
 
         //execute post
-        $weatherResult = curl_exec($ch);
+        $weather_result = curl_exec($ch);
 
         //close connection
         curl_close($ch);
 
         //Convert the string of data to an array
-        $weatherData = json_decode($weatherResult, true);
+        $weather_data = json_decode($weather_result, true);
 
         //Set today's weather
-        $todayWeather = new Weather($weatherData["daily"]["data"][0]);
+        $today_weather = new Weather($weather_data["daily"]["data"][0]);
 
         //Set tomorrow's weather
-        $tomorrowWeather = new Weather($weatherData["daily"]["data"][1]);
+        $tomorrow_weather = new Weather($weather_data["daily"]["data"][1]);
 
         //Set current weather
-        $currently = $weatherData["currently"];
+        $currently = $weather_data["currently"];
         $icon = Weather::setIcon($currently["icon"], 1);
-        $apparentTemperature = round($currently["apparentTemperature"]);
+        $apparent_temperature = round($currently["apparentTemperature"]);
 
-        if ($todayWeather->precipProbability >= 35) {
+        if ($today_weather->precip_probability >= 35) {
             $clothing = "you should bring an umbrella";
-        } else if ($apparentTemperature > 25){
+        } else if ($apparent_temperature > 25){
             $clothing = "you won't need a coat";
-        } else if ($apparentTemperature <= 25 and $apparentTemperature > 10) {
+        } else if ($apparent_temperature <= 25 and $apparent_temperature > 10) {
             $clothing = "you'll need a light coat";
-        } else if ($apparentTemperature <= 10) {
+        } else if ($apparent_temperature <= 10) {
             $clothing = "you'll need a winter coat";
         }
 
-        $weatherArray = array(
+        $weather_array = array(
             "weatherIcon" => $icon,
-            "apparentTemperature" => $apparentTemperature,
-            "todaySunrise" => $todayWeather->sunrise,
-            "todaySunset" => $todayWeather->sunset,
-            "todayTime" => $todayWeather->clock,
-            "todaySummary" => $todayWeather->summary,
-            "todayIcon" => $todayWeather->icon,
-            "todayPrecipProbability" => $todayWeather->precipProbability,
-            "todayTemperatureMin" => $todayWeather->temperatureMin,
-            "todayTemperatureMax" => $todayWeather->temperatureMax,
-            "todayApparentTemperatureMin" => $todayWeather->apparentTemperatureMin,
-            "todayApparentTemperatureMax" => $todayWeather->apparentTemperatureMax,
-            "todayWindSpeed" => $todayWeather->windSpeed,
-            "tomorrowTime" => $tomorrowWeather->clock,
-            "tomorrowSummary" => $tomorrowWeather->summary,
-            "tomorrowIcon" => $tomorrowWeather->icon,
-            "tomorrowPrecipProbability" => $tomorrowWeather->precipProbability,
-            "tomorrowTemperatureMin" => $tomorrowWeather->temperatureMin,
-            "tomorrowTemperatureMax" => $tomorrowWeather->temperatureMax,
-            "tomorrowApparentTemperatureMin" => $tomorrowWeather->apparentTemperatureMin,
-            "tomorrowApparentTemperatureMax" => $tomorrowWeather->apparentTemperatureMax,
-            "tomorrowWindSpeed" => $tomorrowWeather->windSpeed,
+            "apparentTemperature" => $apparent_temperature,
+            "todaySunrise" => $today_weather->sunrise,
+            "todaySunset" => $today_weather->sunset,
+            "todayTime" => $today_weather->clock,
+            "todaySummary" => $today_weather->summary,
+            "todayIcon" => $today_weather->icon,
+            "todayPrecipProbability" => $today_weather->precip_probability,
+            "todayTemperatureMin" => $today_weather->temperature_min,
+            "todayTemperatureMax" => $today_weather->temperature_max,
+            "todayApparentTemperatureMin" => $today_weather->apparent_temperature_min,
+            "todayApparentTemperatureMax" => $today_weather->apparent_temperature_max,
+            "todayWindSpeed" => $today_weather->wind_speed,
+            "tomorrowTime" => $tomorrow_weather->clock,
+            "tomorrowSummary" => $tomorrow_weather->summary,
+            "tomorrowIcon" => $tomorrow_weather->icon,
+            "tomorrowPrecipProbability" => $tomorrow_weather->precip_probability,
+            "tomorrowTemperatureMin" => $tomorrow_weather->temperature_min,
+            "tomorrowTemperatureMax" => $tomorrow_weather->temperature_max,
+            "tomorrowApparentTemperatureMin" => $tomorrow_weather->apparent_temperature_min,
+            "tomorrowApparentTemperatureMax" => $tomorrow_weather->apparent_temperature_max,
+            "tomorrowWindSpeed" => $tomorrow_weather->wind_speed,
             "clothing" => $clothing,
             "bigDate" => date('l, F jS', time())
         );
 
-        echo json_encode($weatherArray);
+        echo json_encode($weather_array);
     }
     else if ($data['command'] == 'getNews') {
         $xmlNews = new SimpleXmlElement($data['newsAddress'], NULL, TRUE);
