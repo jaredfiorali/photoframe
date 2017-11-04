@@ -212,9 +212,7 @@ if (isset($data['command'])) {
             if ($stmt->num_rows == 1) {
                 $output = array(
                     $location." - ".$photoDate->format('F Y'),
-                    "/images/photos/".$path,
-                    $_SESSION['lastLocation'],
-                    $console_error
+                    "/images/photos/".$path
                 );
 
                 //Send the output in JSON
@@ -315,32 +313,30 @@ if (isset($data['command'])) {
     }
     else if ($data['command'] == 'sendToPocket') {
         //Set Pocket static variables
-        $accessTokenJared = '"f1ee6595-6a11-198c-356c-0acf23"';
-        $accessTokenJacqueline = '"6bdcd289-7c70-43bb-05c7-47252b"';
-        $consumerKey = '"69195-1cc1c210fb7e3db337ca2b78"';
-        $accessTokens = array($accessTokenJared, $accessTokenJacqueline);
+        $access_token_jared = '"f1ee6595-6a11-198c-356c-0acf23"';
+        $access_token_jacqueline = '"6bdcd289-7c70-43bb-05c7-47252b"';
+        $consumer_key = '"69195-1cc1c210fb7e3db337ca2b78"';
+        $access_tokens = array($access_token_jared, $access_token_jacqueline);
 
-        foreach ($accessTokens as $accessT) {
+        foreach ($access_tokens as $access_token) {
             //Build cURL JSON submission
-            $curlData = '{"url":"'.$data['pocketAddress'].'","consumer_key":'.$consumerKey.',"access_token":'.$accessT.'}';
+            $curl_data = '{"url":"'.$data['pocketAddress'].'","consumer_key":'.$consumer_key.',"access_token":'.$access_token.'}';
 
-            //Initiate cURL Object
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, 'https://getpocket.com/v3/add');
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $curlData);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Content-Length: ' . strlen($curlData)));
+			// Create new cURL object
+			$ch = new Curl();
 
-            //Execute and save result
-            $pocketResult = curl_exec($ch);
-
-            //Close cURL connection
-            curl_close($ch);
+	        // Execute the cURL request by setting the cURL options: url, # of POST vars, POST data
+			$pocket_result = $ch->execute(array (
+				CURLOPT_URL => "https://getpocket.com/v3/add",
+				CURLOPT_RETURNTRANSFER => TRUE,
+				CURLOPT_CUSTOMREQUEST => "POST",
+				CURLOPT_POSTFIELDS => $curl_data,
+				CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: ' . strlen($curl_data))
+			));
         }
 
         //Return Pocket response
-        echo json_encode($pocketResult);
+        echo json_encode($pocket_result);
     }
     else {
         echo "Sorry, that command does not exist, or an error has occurred. Here's the command I recieved: " . $data['command'];
