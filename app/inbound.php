@@ -1,77 +1,9 @@
 <?php
-include_once 'db_connect.php';
-session_start();
+include_once '../includes/db_connect.php';
+include_once '../includes/class/weather.php';
 
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-
-class Weather {
-    public $clock;
-    public $summary;
-    public $icon;
-    public $precipProbability;
-    public $temperatureMin;
-    public $temperatureMax;
-    public $apparentTemperatureMin;
-    public $apparentTemperatureMax;
-    public $windSpeed;
-    public $sunrise;
-    public $sunset;
-
-    public function __construct(array $weatherData) {
-        $this->clock = $weatherData["time"];
-        $this->summary = strtolower($weatherData["summary"]);
-        $this->icon = setIcon($weatherData["icon"], 1);
-        $this->precipProbability = ($weatherData["precipProbability"])*100;
-        $this->temperatureMin = round($weatherData["temperatureMin"]);
-        $this->temperatureMax = round($weatherData["temperatureMax"]);
-        $this->apparentTemperatureMin = round($weatherData["apparentTemperatureMin"]);
-        $this->apparentTemperatureMax = round($weatherData["apparentTemperatureMax"]);
-        $this->windSpeed = round($weatherData["windSpeed"]);
-        $this->sunrise = date('g:iA', $weatherData["sunriseTime"]);
-        $this->sunset = date('g:iA', $weatherData["sunsetTime"]);
-    }
-}
-
-function setIcon($iconText, $night) {
-    switch($iconText) {
-        case 'clear-day':
-            $iconReturned = 'wi-day-sunny';
-            break;
-        case 'clear-night':
-            $iconReturned = 'wi-night-clear';
-            break;
-        case 'rain':
-            $iconReturned = 'wi-day-rain';
-            break;
-        case 'snow':
-            $iconReturned = 'wi-day-snow';
-            break;
-        case 'sleet':
-            $iconReturned = 'wi-day-sleet';
-            break;
-        case 'wind':
-            $iconReturned = 'wi-day-windy';
-            break;
-        case 'fog':
-            $iconReturned = 'wi-day-fog';
-            break;
-        case 'cloudy':
-            $iconReturned = 'wi-cloudy';
-            break;
-        case 'partly-cloudy-day':
-            $iconReturned = 'wi-day-cloudy';
-            break;
-        case 'partly-cloudy-night':
-            $iconReturned = 'wi-night-alt-cloudy';
-            break;
-        default:
-            $iconReturned = 'wi-na';
-            break;
-    }
-
-    return $iconReturned;
-}
 
 //Convert the string of data to an array
 if ($_SERVER['REQUEST_METHOD'] == 'POST' or $_SERVER['REQUEST_METHOD'] == 'GET')
@@ -323,7 +255,7 @@ if (isset($data['command'])) {
 
         //Set current weather
         $currently = $weatherData["currently"];
-        $icon = setIcon($currently["icon"], 1);
+        $icon = Weather::setIcon($currently["icon"], 1);
         $apparentTemperature = round($currently["apparentTemperature"]);
 
         if ($todayWeather->precipProbability >= 35) {
