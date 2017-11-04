@@ -1,5 +1,5 @@
 <?php
-include_once '../includes/db_connect.php';
+include_once '../includes/class/db.php';
 include_once '../includes/class/weather.php';
 include_once '../includes/class/curl.php';
 
@@ -11,99 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' or $_SERVER['REQUEST_METHOD'] == 'GET')
     parse_str(file_get_contents("php://input"), $data);
 
 if (isset($data['command'])) {
-    if (substr($data['command'],  0, 4 ) == "/add") {
-        $item = filter_var($data['text'], FILTER_SANITIZE_STRING);
-        $addType = filter_var(substr($data['command'],  4, strlen($data['command'])), FILTER_SANITIZE_STRING);
-
-        // Add a new item to the database
-        if ($insert_stmt = $mysqli->prepare("INSERT INTO " . $addType . " (item, dateAdded) VALUES(?, UNIX_TIMESTAMP())")) {
-            $insert_stmt->bind_param('s', $data['text']);
-
-            // Execute the prepared query.
-            if (!$insert_stmt->execute()) {
-                echo '{"response_type": "in_channel", "text": "There was an error adding \'**' . $data['text'] . '**\' to ' . $addType . '. Error: ' . $mysqli->error . '"}';
-            } else {
-                echo '{"response_type": "in_channel", "text": "\'**' . $data['text'] . '**\' was successfully added to ' . ucfirst($addType) . '."}';
-            }
-        } else {
-            echo '{"response_type": "in_channel", "text": "There was an error adding \'**' . $data['text'] . '**\' to  ' . $addType . '. Error: ' . $mysqli->error . '"}';
-        }
-    }
-    else if (substr($data['command'],  0, 9 ) == "/complete") {
-        $addType = filter_var(substr($data['command'],  9, strlen($data['command'])), FILTER_SANITIZE_STRING);
-
-        // Mark all items as completed
-        if ($insert_stmt = $mysqli->prepare("UPDATE " . $addType . " SET dateCompleted = UNIX_TIMESTAMP() WHERE dateCompleted IS NULL")) {
-
-            // Execute the prepared query
-            if (!$insert_stmt->execute()) {
-                echo '{"response_type": "in_channel", "text": "There was an error clearing the ' . $addType . '. Error: ' . $mysqli->error . '"}';
-            } else {
-                echo '{"response_type": "in_channel", "text": "All ' . $addType . ' marked as completed!"}';
-            }
-        } else {
-            echo '{"response_type": "in_channel", "text": "There was an error clearing the ' . $addType . '. Error: ' . $mysqli->error . '"}';
-        }
-    }
-    else if (substr($data['command'],  0, 4 ) == "/get") {
-        $addType = filter_var(substr($data['command'],  4, strlen($data['command'])), FILTER_SANITIZE_STRING);
-
-        // Find all items that are not completed (have a completed date)
-        $prep_stmt = "SELECT item, dateAdded FROM " . $addType . " WHERE dateCompleted IS NULL ORDER BY dateAdded";
-        $stmt = $mysqli->prepare($prep_stmt);
-
-        // Execute the prepared query
-        if ($stmt) {
-            $stmt->execute();
-            $stmt->store_result();
-
-            // Get variables from result
-            $stmt->bind_result($item, $dateAdded);
-
-            // Make sure we have more than 1 returned result
-            if ($stmt->num_rows > 0) {
-                $response = '|Item|Date Added|\n|:------------|:------------|\n';
-
-                // Retreive the items from the query
-                while ($stmt->fetch()) {
-                    $response = $response . '|' . $item . '|' . date('F jS', $dateAdded) . '|\n';
-                }
-
-                echo '{"response_type": "in_channel", "text": "' . $response . '"}';
-            } else if ($stmt->num_rows == 0) {
-                echo '{"response_type": "in_channel", "text": "Looks like there are no items!"}';
-            } else {
-                echo '{"response_type": "in_channel", "text": "There was an error getting the list of ' . $addType . ' from the server.\nError: ' . $mysqli->error . '\nResponse: ' . $response . '"}';
-            }
-        } else {
-            echo '{"response_type": "in_channel", "text": "There was an error getting the list of ' . $addType . ' from the server.\nError: ' . $mysqli->error . '"}';
-        }
-        $stmt->close();
-
-    }
-    else if (substr($data['command'],  0, 5 ) == "clear") {
-		// Clean the input from FE
-		$addType = filter_var(substr($data['command'],  5, strlen($data['command'])), FILTER_SANITIZE_STRING);
-
-		// Mark a specific item as completed
-		if ($update_stmt = $mysqli->prepare("UPDATE ".$addType." SET dateCompleted = UNIX_TIMESTAMP() WHERE id = ?")) {
-			$update_stmt->bind_param('i', $data['id']);
-
-			// Execute the prepared query
-			if (!$update_stmt->execute()) {
-				// If there's nothing to execute, looks like we had a problem
-				echo "Error: ".$mysqli->error;
-			} else {
-				// Success! Return this data
-				print_r($data);
-			}
-		} else {
-			// If there's nothing to execute, looks like we had a problem
-			echo "Error: ".$mysqli->error;
-		}
-    }
 	// TODO: Convert this to an object
-    else if ($data['command'] == "toggleLights") {
+    if ($data['command'] == "toggleLights") {
 
 		// Create new cURL object
 		$ch = new Curl();
@@ -154,38 +63,6 @@ if (isset($data['command'])) {
 		// Return the lights state
         echo $light_on;
     }
-    else if (substr($data['command'], 0, 8 ) == "retrieve") {
-        $addType = strtolower(filter_var(substr($data['command'], 8, strlen($data['command'])), FILTER_SANITIZE_STRING));
-
-        $prep_stmt = "SELECT id, item FROM ".$addType." WHERE dateCompleted IS NULL ORDER BY dateAdded";
-        $stmt = $mysqli->prepare($prep_stmt);
-
-        if ($stmt) {
-            $stmt->execute();
-            $stmt->store_result();
-
-            // get variables from result.
-            $stmt->bind_result($id, $item);
-
-            $response = "[";
-
-            if ($stmt->num_rows > 0) {
-                while ($stmt->fetch()) {
-                    $response = $response . '{"id":'.$id.',"item":"'.$item.'"},';
-                }
-
-                echo substr($response, 0, strlen($response)-1) . ']';
-
-            } else if ($stmt->num_rows == 0) {
-                echo '{"response_type": "in_channel", "text": ""}';
-            } else {
-                echo '{"response_type": "in_channel", "text": "There was an error getting the list of ' . $addType . ' from the server.\nError: ' . $mysqli->error . '\nResponse: ' . $response . '"}';
-            }
-        } else {
-            echo '{"response_type": "in_channel", "text": "There was an error getting the list of ' . $addType . ' from the server.\nError: ' . $mysqli->error . '"}';
-        }
-        $stmt->close();
-    }
     else if ($data['command'] == 'calendar') {
         // Get the API client and construct the service object.
         //echo getCalendarEntries();
@@ -193,43 +70,26 @@ if (isset($data['command'])) {
     }
     else if ($data['command'] == 'getPhoto') {
 
-        // Prepare the MySQL statement
-        $prep_stmt = "CALL getPhoto()";
-        $stmt = $mysqli->prepare($prep_stmt);
+        // Prepare and execute the MySQL statement
+		$db = new DB();
+		$db_results = $db->execute("CALL getPhoto()");
 
-        // Check if something was returned
-        if ($stmt) {
-            // Execute the DB call
-            $stmt->execute();
-            $stmt->store_result();
+		// Just to keep track, this returns: Photo Path, Location, Date Taken
+		$path = $db_results[0];
+		$location = $db_results[1];
+		$date_taken = $db_results[2];
 
-            // Get variables from result.
-            $stmt->bind_result($path, $location, $date_taken);
-            $stmt->fetch();
+        // Convert the DB date to a readable format
+        $photoDate = new DateTime($date_taken);
 
-            // Convert the DB date to a readable format
-            $photoDate = new DateTime($date_taken);
+		// Compile the results from the query for the FE
+		$output = array(
+			$location." - ".$photoDate->format('F Y'),
+			"/images/photos/".$path
+		);
 
-            // We should have EXACTLY 1 value returned
-            if ($stmt->num_rows == 1) {
-                $output = array(
-                    $location." - ".$photoDate->format('F Y'),
-                    "/images/photos/".$path
-                );
-
-                //Send the output in JSON
-                echo json_encode($output);
-            } else {
-                // Looks like we got more that 1 value
-                echo 'Failed to get photo - '.$mysqli->error;
-            }
-        } else {
-            // Look like the MySQL statement failed to return something
-            echo 'Failed to get photo - '.$mysqli->error;
-        }
-
-        // Delete the MySQL object
-        $stmt->close();
+		//Send the output in JSON
+		echo json_encode($output);
     }
     else if ($data['command'] == 'getWeather') {
 
