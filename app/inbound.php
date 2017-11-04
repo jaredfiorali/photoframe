@@ -1,6 +1,7 @@
 <?php
 include_once '../includes/db_connect.php';
 include_once '../includes/class/weather.php';
+include_once '../includes/class/curl.php';
 
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
@@ -231,18 +232,16 @@ if (isset($data['command'])) {
         $stmt->close();
     }
     else if ($data['command'] == 'getWeather') {
-        $ch = curl_init();
 
-        //set the url, number of POST vars, POST data
-        curl_setopt($ch, CURLOPT_URL, "https://api.darksky.net/forecast/ced23c715fea437145b3182bf1065f0c/43.588145,-79.648063?units=ca&exclude=minutely,flags");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADEROPT, "Accept-Encoding: gzip");
+		// Create new cURL object
+		$ch = new Curl();
 
-        //execute post
-        $weather_result = curl_exec($ch);
-
-        //close connection
-        curl_close($ch);
+        // Execute the cURL request by setting the cURL options: url, # of POST vars, POST data
+		$weather_result = $ch->execute(array (
+			CURLOPT_URL => "https://api.darksky.net/forecast/ced23c715fea437145b3182bf1065f0c/43.588145,-79.648063?units=ca&exclude=minutely,flags",
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_HEADEROPT => "Accept-Encoding: gzip"
+		));
 
         //Convert the string of data to an array
         $weather_data = json_decode($weather_result, true);
