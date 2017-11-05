@@ -16,6 +16,7 @@ function resetInterval(initial) {
         getT = setInterval(startTime, 500);
     getWeather();
     getPhoto(initial);
+	getNews();
     getLights();
     getCalendar();
     clearInterval(getW);
@@ -25,7 +26,7 @@ function resetInterval(initial) {
     clearInterval(getC);
     getW = setInterval(getWeather, 500000);
     getP = setInterval(getPhoto, 30000);
-    getN = setInterval(getNews('http://feeds.reuters.com/reuters/topNews.rss'), 500000);
+    getN = setInterval(getNews, 500000);
     getL = setInterval(getLights, 500000);
     getL = setInterval(getCalendar, 500000);
 }
@@ -66,7 +67,7 @@ function startTime() {
 function getPhoto(initial) {
     //Get the next photo
     $.ajax({
-        url: "http://192.168.20.40/inbound.php",
+        url: "http://aurora.fiora.li/inbound.php",
         type: "POST",
         data: 'command=getPhoto',
         accept: 'application/json',
@@ -108,7 +109,7 @@ function getPhoto(initial) {
 function getWeather() {
     //Get the next weather report
     $.ajax({
-        url: "http://192.168.20.40/inbound.php",
+        url: "http://aurora.fiora.li/inbound.php",
         type: "POST",
         data: 'command=getWeather',
         accept: 'application/json',
@@ -156,7 +157,7 @@ function getWeather() {
 function addToPocket(pocketAddress) {
     //Add URL to Pocket
     $.ajax({
-        url: "http://192.168.20.40/inbound.php",
+        url: "http://aurora.fiora.li/inbound.php",
         type: "POST",
         data: 'command=sendToPocket&pocketAddress=' + pocketAddress,
         contentType: 'application/x-www-form-urlencoded',
@@ -171,12 +172,12 @@ function addToPocket(pocketAddress) {
     });
 }
 
-function getNews(newsAddress) {
+function getNews() {
     //Receive News from AP
     $.ajax({
-        url: "http://192.168.20.40/inbound.php",
+        url: "http://aurora.fiora.li/inbound.php",
         type: "POST",
-        data: 'command=getNews&newsAddress=' + newsAddress,
+        data: 'command=getNews',
         accept: 'application/json',
         dataType: "json",
         contentType: 'application/x-www-form-urlencoded',
@@ -201,7 +202,7 @@ function getLights() {
 
     //Get state of Lights
     $.ajax({
-        url: "http://192.168.20.40/inbound.php",
+        url: "http://aurora.fiora.li/inbound.php",
         type: "POST",
         data: 'command=lightsState',
         accept: 'application/json',
@@ -225,7 +226,7 @@ function getLights() {
 function getCalendar() {
     //Get calendar list
     $.ajax({
-        url: "http://192.168.20.40/inbound.php",
+        url: "http://aurora.fiora.li/inbound.php",
         type: "POST",
         data: 'command=calendar',
         accept: 'application/json',
@@ -279,7 +280,7 @@ $(document).ready(function () {
             message = message + "true";
 
         $.ajax({
-            url: "http://192.168.20.40/inbound.php",
+            url: "http://aurora.fiora.li/inbound.php",
             type: "POST",
             data: message,
             accept: 'application/json',

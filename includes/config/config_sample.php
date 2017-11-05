@@ -20,6 +20,8 @@ class Config {
 
 	const pocket_consumer_key = '';
 
+	const news_url = '';
+
 	public function __constructor() {
 		// Silence is golden
 	}

@@ -158,7 +158,9 @@ if (isset($data['command'])) {
         echo json_encode($weather_array);
     }
     else if ($data['command'] == 'getNews') {
-        $xmlNews = new SimpleXmlElement($data['newsAddress'], NULL, TRUE);
+        $xmlNews = new SimpleXmlElement(Config::news_url, NULL, TRUE);
+
+		error_log("HIT");
 
         $articleTitle = array();
         $articleURL = array();
