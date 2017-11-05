@@ -3,7 +3,6 @@ var getW = 0;
 var getP = 0;
 var getN = 0;
 var getT = 0;
-var getTo = 0;
 var getL = 0;
 var getC = 0;
 var lastUpdate = new Date();
@@ -17,19 +16,16 @@ function resetInterval(initial) {
         getT = setInterval(startTime, 500);
     getWeather();
     getPhoto(initial);
-    getToDo();
     getLights();
     getCalendar();
     clearInterval(getW);
     clearInterval(getP);
     clearInterval(getN);
-    clearInterval(getTo);
     clearInterval(getL);
     clearInterval(getC);
     getW = setInterval(getWeather, 500000);
     getP = setInterval(getPhoto, 30000);
     getN = setInterval(getNews('http://feeds.reuters.com/reuters/topNews.rss'), 500000);
-    getTo = setInterval(getToDo, 500000);
     getL = setInterval(getLights, 500000);
     getL = setInterval(getCalendar, 500000);
 }
@@ -56,59 +52,15 @@ function startTime() {
     lastUpdate = today;
 
     if (m < 10) {
+		// Add leading 0 in front of minutes if required
         m = "0" + m
-    } //Add leading 0 in front of minutes if required
-    if (s < 10) {
-        s = "0" + s
-    } //Add leading 0 in front of minutes if required
+    }
     if (h > 12) {
+		// Convert to 12 hour time
         h = h - 12
-    } //Convert to 12 hour time
+    }
 
     document.getElementById('bigClock').innerHTML = h + ':' + m
-}
-
-function getToDo() {
-    //Get todo list
-    $.ajax({
-        url: "http://192.168.20.40/inbound.php",
-        type: "POST",
-        data: 'command=retrieveTodo',
-        accept: 'application/json',
-        contentType: 'application/x-www-form-urlencoded',
-        success: function (result) {
-            $("#todoList tbody tr").remove();
-            var resultJSON = $.parseJSON(result);
-            var table = document.getElementById("todoList");
-
-            for (var i = 0; i < resultJSON.length; i++) {
-                var row = table.insertRow(0);
-                var cell1 = row.insertCell(0);
-                cell1.innerHTML = '<a class="summaryList" href="javascript:;" onclick="clearTodo(\'' + resultJSON[i].id + '\', this);">' + resultJSON[i].item + "</a>";
-            }
-        },
-        error: function (err) {
-            displayErrorAlert("Error retreiving To Do List - Details in console", err);
-        }
-    });
-}
-
-function clearTodo(e, th) {
-    //Mark Grocery Item as Completed
-    $.ajax({
-        url: "http://192.168.20.40/inbound.php",
-        type: "POST",
-        data: 'command=cleartodo&id=' + e,
-        accept: 'application/json',
-        contentType: 'application/x-www-form-urlencoded',
-        success: function (result) {
-            $(th).wrap("<strike>");
-            $(th).fadeOut("slow");
-        },
-        error: function (err) {
-            displayErrorAlert("Error removing To Do item - Details in console", err);
-        }
-    });
 }
 
 function getPhoto(initial) {
@@ -118,13 +70,12 @@ function getPhoto(initial) {
         type: "POST",
         data: 'command=getPhoto',
         accept: 'application/json',
+		cache: false,
         dataType: "json",
         contentType: 'application/x-www-form-urlencoded',
         success: function (result) {
             document.getElementById('location').innerHTML = '<i class="fa fa-location-arrow" aria-hidden="true"></i> ' + result[0];
-            
-            console.log(result);
-            
+
             if (initial) {
                 $('#backgroundImage').attr("src", result[1]);
                 $('#backgroundImage1').attr("src", result[1]);
@@ -133,7 +84,7 @@ function getPhoto(initial) {
                     $('#backgroundImage').attr("src", result[1]);
                     $('#backgroundImage1').css('z-index', 2);
                     $('#backgroundImage').css('z-index', 1);
-                    
+
                     $('#backgroundImage1').fadeOut(2500);
                     $('#backgroundImage').fadeIn(0);
                     photoToggle = false;
@@ -141,7 +92,7 @@ function getPhoto(initial) {
                     $('#backgroundImage1').attr("src", result[1]);
                     $('#backgroundImage1').css('z-index', 1);
                     $('#backgroundImage').css('z-index', 2);
-                    
+
                     $('#backgroundImage').fadeOut(2500);
                     $('#backgroundImage1').fadeIn(0);
                     photoToggle = true;
@@ -165,7 +116,7 @@ function getWeather() {
         dataType: "json",
         contentType: 'application/x-www-form-urlencoded',
         success: function (result) {
-            
+
             //Update icons
             document.getElementById('topWeatherIcon').className = "";
             document.getElementById('topWeatherIcon').className = "wi topWeatherIcon";
@@ -203,7 +154,7 @@ function getWeather() {
 }
 
 function addToPocket(pocketAddress) {
-    //Add URL to Pocket    
+    //Add URL to Pocket
     $.ajax({
         url: "http://192.168.20.40/inbound.php",
         type: "POST",
@@ -299,7 +250,7 @@ $(document).ready(function () {
     $(window).on('onunload', function () {
         $(window).scrollTop(0);
     });
-    
+
     $('#backgroundTopSummary').css('z-index', 30);
     $('#backgroundTopRefresh').css('z-index', 30);
 
