@@ -5,16 +5,11 @@ include_once '../includes/config/config.php';
 class DB {
 
 	private $mysqli;
-	private $stmt;
-	private $stmt_meta;
-	private $results;
 
 	/**
 	* Creates a mysql object to connect to the database
 	*/
 	public function __construct() {
-
-		$config = new Config();
 
 		// Create the mysql object we will use to connect to the database
 		$this->mysqli = new mysqli(Config::db_host, Config::db_username, Config::db_password, Config::db_database);
