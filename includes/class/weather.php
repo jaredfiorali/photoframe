@@ -1,4 +1,5 @@
 <?php
+
 class Weather {
 
     public $clock;

@@ -1,4 +1,7 @@
 <?php
+
+include_once '../includes/config/config.php';
+
 class DB {
 
 	private $mysqli;
@@ -11,8 +14,10 @@ class DB {
 	*/
 	public function __construct() {
 
+		$config = new Config();
+
 		// Create the mysql object we will use to connect to the database
-		$this->mysqli = new mysqli("localhost", "apache", "fb8bda50b9f86b229be154a8e32edfc7", "Dashboard");
+		$this->mysqli = new mysqli(Config::db_host, Config::db_username, Config::db_password, Config::db_database);
 
 		// Check connection worked
 		if ($this->mysqli->connect_error) {

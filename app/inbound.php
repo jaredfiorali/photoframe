@@ -1,4 +1,5 @@
 <?php
+include_once '../includes/config/config.php';
 include_once '../includes/class/db.php';
 include_once '../includes/class/weather.php';
 include_once '../includes/class/curl.php';
@@ -80,11 +81,11 @@ if (isset($data['command'])) {
 		$date_taken = $db_results[2];
 
         // Convert the DB date to a readable format
-        $photoDate = new DateTime($date_taken);
+        $photo_date = new DateTime($date_taken);
 
 		// Compile the results from the query for the FE
 		$output = array(
-			$location." - ".$photoDate->format('F Y'),
+			$location." - ".$photo_date->format('F Y'),
 			"/images/photos/".$path
 		);
 
@@ -98,7 +99,7 @@ if (isset($data['command'])) {
 
         // Execute the cURL request by setting the cURL options: url, # of POST vars, POST data
 		$weather_result = $ch->execute(array (
-			CURLOPT_URL => "https://api.darksky.net/forecast/ced23c715fea437145b3182bf1065f0c/43.588145,-79.648063?units=ca&exclude=minutely,flags",
+			CURLOPT_URL => "https://api.darksky.net/forecast/".Config::darksky_api_key."/".Config::weather_latitude.",".Config::weather_longitude."?units=ca&exclude=minutely,flags",
 			CURLOPT_RETURNTRANSFER => 1,
 			CURLOPT_HEADEROPT => "Accept-Encoding: gzip"
 		));
@@ -175,14 +176,11 @@ if (isset($data['command'])) {
     }
     else if ($data['command'] == 'sendToPocket') {
         //Set Pocket static variables
-        $access_token_jared = '"f1ee6595-6a11-198c-356c-0acf23"';
-        $access_token_jacqueline = '"6bdcd289-7c70-43bb-05c7-47252b"';
-        $consumer_key = '"69195-1cc1c210fb7e3db337ca2b78"';
-        $access_tokens = array($access_token_jared, $access_token_jacqueline);
+        $access_tokens = Config::pocket_access_tokens;
 
         foreach ($access_tokens as $access_token) {
             //Build cURL JSON submission
-            $curl_data = '{"url":"'.$data['pocketAddress'].'","consumer_key":'.$consumer_key.',"access_token":'.$access_token.'}';
+            $curl_data = '{"url":"'.$data['pocketAddress'].'","consumer_key":"'.Config::pocket_consumer_key.'","access_token":"'.$access_token.'"}';
 
 			// Create new cURL object
 			$ch = new Curl();
@@ -197,8 +195,8 @@ if (isset($data['command'])) {
 			));
         }
 
-        //Return Pocket response
-        echo json_encode($pocket_result);
+		//Return Pocket response
+		echo json_encode($pocket_result);
     }
     else {
         echo "Sorry, that command does not exist, or an error has occurred. Here's the command I recieved: " . $data['command'];
