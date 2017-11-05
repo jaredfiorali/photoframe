@@ -59,6 +59,9 @@ function startTime(initial) {
     if (h > 12) {
 		// Convert to 12 hour time
         h = h - 12
+    } else if (h == 0) {
+		// Convert to 12 hour time
+        h = 12
     }
 
 	if (today.getMinutes() > lastUpdate.getMinutes() || today.getHours() > lastUpdate.getHours() || initial) {
