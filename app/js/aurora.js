@@ -12,8 +12,10 @@ var onImage = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAuCAYAAAC/OZ4
 var offImage = "data:image/png;base64,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";
 
 function resetInterval(initial) {
-    if (initial)
-        getT = setInterval(startTime, 500);
+    if (initial) {
+		startTime(initial);
+		getT = setInterval(startTime, 1000, false);
+	}
     getWeather();
     getPhoto(initial);
 	getNews();
@@ -40,7 +42,7 @@ function displayErrorAlert(message, err) {
     console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 }
 
-function startTime() {
+function startTime(initial) {
     //Get time
     var today = new Date();
     var h = today.getHours();
@@ -49,8 +51,6 @@ function startTime() {
 
     if (today.getTime() > lastUpdate.getTime() + 240000)
         resetInterval(false);
-
-    lastUpdate = today;
 
     if (m < 10) {
 		// Add leading 0 in front of minutes if required
@@ -61,7 +61,11 @@ function startTime() {
         h = h - 12
     }
 
-    document.getElementById('bigClock').innerHTML = h + ':' + m
+	if (today.getMinutes() > lastUpdate.getMinutes() || today.getHours() > lastUpdate.getHours() || initial) {
+		document.getElementById('bigClock').innerHTML = h + ':' + m
+	}
+
+	lastUpdate = today;
 }
 
 function getPhoto(initial) {
