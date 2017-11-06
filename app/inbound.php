@@ -73,7 +73,7 @@ if (isset($data['command'])) {
 
         // Prepare and execute the MySQL statement
 		$db = new DB();
-		$db_results = $db->execute("CALL getPhoto()");
+		$db_results = $db->execute("CALL randomPhoto()");
 
 		// Just to keep track, this returns: Photo Path, Location, Date Taken
 		$path = $db_results[0];
