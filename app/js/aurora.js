@@ -271,9 +271,11 @@ $(document).ready(function () {
 
     $('div.backgroundRefresh').click(function () {
         setTimeout(function () {
+			$('#backgroundRefresh').css('pointer-events', 'auto');
             document.getElementById('backgroundRefresh').innerHTML = '<i class="fa fa-refresh fa-1 weatherIcon" aria-hidden="true"></i>';
         }, 2000);
 
+		$('#backgroundRefresh').css('pointer-events', 'none');
         document.getElementById('backgroundRefresh').innerHTML = '<i class="fa fa-refresh fa-1 fa-pulse fa-3x fa-fw weatherIcon"></i>';
         resetInterval(false);
     });
