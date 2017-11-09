@@ -64,7 +64,7 @@ function startTime(initial) {
         h = 12
     }
 
-	if (today.getMinutes() > lastUpdate.getMinutes() || today.getHours() > lastUpdate.getHours() || initial) {
+	if (today.getTime() > (lastUpdate.getTime() + 60) || initial) {
 		document.getElementById('bigClock').innerHTML = h + ':' + m
 	}
 
