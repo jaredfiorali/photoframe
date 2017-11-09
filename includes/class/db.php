@@ -36,8 +36,11 @@ class DB {
 			// Check to make sure the query was a success
 			if (!$stmt->error) {
 
-				// Save the results to an array
-				$query_results = $stmt->get_result()->fetch_array();
+				// Check to make sure the returned statement was an array
+				if ($statement_results = $stmt->get_result()) {
+					// Save the results to an array
+					$query_results = $statement_results->fetch_array();
+				}
 			}
 		}
 

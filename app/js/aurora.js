@@ -82,22 +82,22 @@ function getPhoto(initial) {
         dataType: "json",
         contentType: 'application/x-www-form-urlencoded',
         success: function (result) {
-            document.getElementById('location').innerHTML = '<i class="fa fa-location-arrow" aria-hidden="true"></i> ' + result[0];
+            document.getElementById('location').innerHTML = '<i class="fa fa-location-arrow" aria-hidden="true"></i> ' + result[1];
 
             if (initial) {
-                $('#backgroundImage').attr("src", result[1]);
-                $('#backgroundImage1').attr("src", result[1]);
+                $('#backgroundImage').attr('src', 'data:image/jpeg;base64,' + result[0]);
+                $('#backgroundImage1').attr('src', 'data:image/jpeg;base64,' + result[0]);
             } else {
                 if (photoToggle) {
-                    $('#backgroundImage').attr("src", result[1]);
-                    $('#backgroundImage1').css('z-index', 2);
+                    $('#backgroundImage').attr('src', 'data:image/jpeg;base64,' + result[0]);
                     $('#backgroundImage').css('z-index', 1);
+					$('#backgroundImage1').css('z-index', 2);
 
                     $('#backgroundImage1').fadeOut(2500);
                     $('#backgroundImage').fadeIn(0);
                     photoToggle = false;
                 } else {
-                    $('#backgroundImage1').attr("src", result[1]);
+                    $('#backgroundImage1').attr('src', 'data:image/jpeg;base64,' + result[0]);
                     $('#backgroundImage1').css('z-index', 1);
                     $('#backgroundImage').css('z-index', 2);
 
