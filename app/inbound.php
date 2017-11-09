@@ -11,7 +11,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 if ($_SERVER['REQUEST_METHOD'] == 'POST' or $_SERVER['REQUEST_METHOD'] == 'GET')
     parse_str(file_get_contents("php://input"), $data);
 
-if (isset($data['command'])) {
+if ($data['command']) {
 	// TODO: Convert this to an object
     if ($data['command'] == "toggleLights") {
 
@@ -76,7 +76,7 @@ if (isset($data['command'])) {
 		$db_results = $db->execute("CALL randomPhoto()");
 
 		// Just to keep track, this returns: Photo Path, Location, Date Taken
-		$path = $db_results[0];
+		$image = $db_results[0];
 		$location = $db_results[1];
 		$date_taken = $db_results[2];
 
@@ -85,8 +85,8 @@ if (isset($data['command'])) {
 
 		// Compile the results from the query for the FE
 		$output = array(
-			$location." - ".$photo_date->format('F Y'),
-			"/images/photos/".$path
+			$image,
+			$location." - ".$photo_date->format('F Y')
 		);
 
 		//Send the output in JSON
@@ -160,8 +160,6 @@ if (isset($data['command'])) {
     else if ($data['command'] == 'getNews') {
         $xmlNews = new SimpleXmlElement(Config::news_url, NULL, TRUE);
 
-		error_log("HIT");
-
         $articleTitle = array();
         $articleURL = array();
 
@@ -204,7 +202,21 @@ if (isset($data['command'])) {
         echo "Sorry, that command does not exist, or an error has occurred. Here's the command I recieved: " . $data['command'];
     }
 }
+else if ($check = getimagesize($_FILES["image"]["tmp_name"])) {
+	 $image = file_get_contents($_FILES['image']['tmp_name']);
+	 $image_base64 = base64_encode($image);
+
+	 $location = $_POST['location'];
+	 $date_taken = $_POST['date_taken'];
+
+	 // Prepare and execute the MySQL statement
+	 $db = new DB();
+	 $db_results = $db->execute("INSERT into photos (photo, location, date_taken) VALUES ('$image_base64', '$location', '$date_taken')");
+
+	 //Send the output in JSON
+	 echo "SUCCESS";
+}
 else {
-    echo "Sorry, that command does not exist, or an error has occurred. Here's the command I recieved: " . $data['command'];
+    echo "Sorry, that endpoint does not exist, or an error has occurred";
 }
 ?>
