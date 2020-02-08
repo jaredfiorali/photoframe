@@ -1,3 +1,8 @@
 images/
-wget/
 includes/config/config.php
+.vscode
+/.idea/
+/vendor/
+._.DS_Store
+/public/wget
+/public/js/*.min.js
