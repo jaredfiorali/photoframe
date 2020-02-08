@@ -1,6 +1,6 @@
 <?php
 
-class Config {
+class Config_Sample {
 
 	const db_host = '';
 
@@ -20,11 +20,13 @@ class Config {
 
 	const pocket_consumer_key = '';
 
-	const news_url = '';
+	const news_sources = '';
+
+	const news_api_key = '';
+
+	const philips_hue_token = '';
 
 	public function __constructor() {
 		// Silence is golden
 	}
 }
-
-?>

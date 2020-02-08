@@ -1,0 +1,10 @@
+{
+	"require": {
+		"ext-curl": "*",
+		"ext-json": "*",
+		"ext-gd": "*"
+	},
+	"require-dev": {
+		"phalcon/ide-stubs": "^3.4"
+	}
+}

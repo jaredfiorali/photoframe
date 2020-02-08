@@ -3,13 +3,11 @@
 class Curl {
 
 	private $ch;
-	private $options;
 
 	/**
 	* Constructor for cURL object. Doesn't do anything (for now)
-	* @param string[] $weather_data Array of strings received from the weather api
 	*/
-    public function __construct() {
+	public function __construct() {
 		// Silence is golden
 	}
 
@@ -29,7 +27,7 @@ class Curl {
 
 	/**
 	* @param string[] $options Set of cURL options
-	* @return $curl_result Text received from cURL response
+	* @return string
 	*/
 	public function execute(array $options) {
 
@@ -57,4 +55,3 @@ class Curl {
 	}
 
 }
-?>

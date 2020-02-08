@@ -1,6 +1,6 @@
 <?php
 
-include_once '../includes/config/config.php';
+include_once '../config/config.php';
 
 class DB {
 
@@ -25,19 +25,20 @@ class DB {
 	* @param string $prep_stmt String that will be executed on the database
 	* @return array
 	*/
-	public function execute(string $prep_stmt) {
+	public function execute(String $prep_stmt) {
 
 		// Create the prepared statement and store in in a variable
-        $stmt = $this->mysqli->prepare($prep_stmt);
+		$stmt = $this->mysqli->prepare($prep_stmt);
 
-        // Execute the prepared query
-        if ($stmt->execute()) {
+		// Execute the prepared query
+		if ($stmt->execute()) {
 
 			// Check to make sure the query was a success
 			if (!$stmt->error) {
 
 				// Check to make sure the returned statement was an array
 				if ($statement_results = $stmt->get_result()) {
+
 					// Save the results to an array
 					$query_results = $statement_results->fetch_array();
 				}
@@ -45,10 +46,9 @@ class DB {
 		}
 
 		// Close the database connection after saving the variables
-        $stmt->close();
+		$stmt->close();
 
 		// Return the result from the query
 		return $query_results;
 	}
 }
-?>
