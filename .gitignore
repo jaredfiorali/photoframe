@@ -6,3 +6,4 @@ includes/config/config.php
 ._.DS_Store
 /public/wget
 /public/js/*.min.js
+/vendor
