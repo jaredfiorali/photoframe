@@ -14,7 +14,7 @@ class ConfigService extends Injectable
 	 * If we should have certain development features enabled (minification for instance)
 	 * @var boolean DEVELOPMENT_MODE
 	**/
-	const DEVELOPMENT_MODE = true;
+	const DEVELOPMENT_MODE = false;
 
 	/**
 	 * The database host

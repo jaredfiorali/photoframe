@@ -2,5 +2,5 @@
 
 <IfModule mod_rewrite.c>
     RewriteEngine on
-    RewriteRule	^photoframe/(.*)$ public/$1 [L]
+    RewriteRule	^/(.*)$ public/$1 [L]
 </IfModule>
