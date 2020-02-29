@@ -15,7 +15,6 @@ ADD includes ./includes
 ADD public ./public
 ADD .htaccess .
 ADD composer.json .
-ADD docker/entrypoint.sh .
 ADD docker/apache2/photoframe.conf .
 ADD docker/apache2/httpd.conf .
 

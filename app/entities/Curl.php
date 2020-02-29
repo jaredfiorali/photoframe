@@ -29,9 +29,10 @@ class Curl extends BaseEntity {
 	}
 
 	/**
-	* @param string[] $options Set of cURL options
-	* @return string
-	*/
+	 * Uses the cURL connection initiated by the constructor, and executes a cURL command
+	 * @param string[] $options Set of cURL options
+	 * @return string
+	 */
 	public function execute(array $options) {
 
 		// Set this to nothing
@@ -46,8 +47,14 @@ class Curl extends BaseEntity {
 			// Let's do what we intended and execute this cURL request
 			$curl_result = curl_exec($this->ch);
 
-			// Be smart, and close this connection
-			curl_close($this->ch);
+			// Check to see if there was an error
+			if (!$curl_result) {
+
+				// Dump it
+				var_dump([
+					'curl_error' => curl_error($this->ch),
+				]);
+			}
 		}
 		else {
 			// TODO: Throw some sort of error here
