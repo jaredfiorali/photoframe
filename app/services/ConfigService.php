@@ -20,7 +20,7 @@ class ConfigService extends Injectable
 	 * The database host
 	 * @var string DB_HOST
 	**/
-	const DB_HOST = 'mysql.mysql.svc.cluster.local';
+	const DB_HOST = 'mysql.mysql';
 
 	/**
 	 * The username we will use to access the database
