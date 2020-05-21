@@ -9,13 +9,7 @@ RUN apk --no-cache add php7 php7-pdo_mysql apache2 php7-apache2 php7-phalcon com
 ADD composer.json .
 RUN composer install --prefer-dist --no-scripts --no-dev && rm -rf /root/.composer
 
-ADD app ./app
-ADD includes ./includes
-ADD public ./public
-ADD .htaccess .
-ADD composer.json .
-ADD docker/apache2/photoframe.conf .
-ADD docker/apache2/httpd.conf .
+ADD . .
 
 EXPOSE 80
 
