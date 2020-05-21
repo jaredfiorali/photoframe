@@ -4,11 +4,10 @@ RUN mkdir -p /var/www/html
 RUN mkdir -p /etc/apache2/sites-enabled
 WORKDIR /var/www/html
 
-RUN apk --no-cache update
-RUN apk --no-cache add php7 php7-pdo_mysql
-RUN apk --no-cache add apache2 php7-apache2
-RUN apk --no-cache add php7-phalcon
-RUN apk --no-cache add composer
+RUN apk --no-cache add php7 php7-pdo_mysql apache2 php7-apache2 php7-phalcon composer
+
+ADD composer.json .
+RUN composer install --prefer-dist --no-scripts --no-dev && rm -rf /root/.composer
 
 ADD app ./app
 ADD includes ./includes
@@ -17,8 +16,6 @@ ADD .htaccess .
 ADD composer.json .
 ADD docker/apache2/photoframe.conf .
 ADD docker/apache2/httpd.conf .
-
-RUN composer install --no-dev
 
 EXPOSE 80
 
