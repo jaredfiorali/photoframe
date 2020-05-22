@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build Photoframe Docker Image
 
 on:
   push:
@@ -31,11 +31,22 @@ jobs:
         registry: registry.fiora.li
         tags: latest
     - name: Slack - Photoframe build success notification
+      if: ${{ success() }}
       uses: rtCamp/action-slack-notify@v2.0.2
       env:
         SLACK_COLOR: '#44D362'
         SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
         SLACK_TITLE: 'Docker Build - Photoframe'
         SLACK_MESSAGE: Photoframe Docker build successfully completed!
+        SLACK_USERNAME: GithubActions
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    - name: Slack - Photoframe build failed notification
+      if: ${{ failure() }}
+      uses: rtCamp/action-slack-notify@v2.0.2
+      env:
+        SLACK_COLOR: '#FF6961'
+        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+        SLACK_TITLE: 'Docker Build - Photoframe'
+        SLACK_MESSAGE: Photoframe Docker build was unsuccessful!
         SLACK_USERNAME: GithubActions
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
