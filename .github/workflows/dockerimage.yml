@@ -14,6 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.ref }}
     - name: Slack - Photoframe build start notification
       uses: rtCamp/action-slack-notify@v2.0.2
       env:
