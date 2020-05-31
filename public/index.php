@@ -123,13 +123,15 @@ $di->set(
 
 // Register our Config service for access to configuration parameters
 $di->setShared('Config', function() {
-	return new ConfigService();
+	$configService = new ConfigService();
+
+	return $configService->initialize();
 });
 
 $application = new Application($di);
 
 try {
-    var_dump($di['Config']->get_value('DEVELOPMENT_MODE'));
+	var_dump($di['Config']->get_value('DEVELOPMENT_MODE'));
 
 	// // Handle the request
 	// $response = $application->handle($_SERVER['REQUEST_URI']);
