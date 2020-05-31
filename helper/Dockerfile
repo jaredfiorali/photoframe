@@ -11,7 +11,7 @@ RUN composer install --prefer-dist --no-scripts --no-dev && rm -rf /root/.compos
 
 ADD . .
 
-EXPOSE 80
+EXPOSE 8080
 
 # By default, simply start apache.
 RUN ["mv", "-f", "/var/www/html/photoframe.conf", "/etc/apache2/sites-enabled"]
