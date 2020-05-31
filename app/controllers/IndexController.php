@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Controllers\Base\BaseController;
 use App\Filters\UglifyJS;
 use App\Services\ConfigService;
-use Phalcon\Assets\Filters;
 
 class IndexController extends BaseController {
 
@@ -22,9 +21,9 @@ class IndexController extends BaseController {
 
 		// Check to see if we are debugging
 		if (!ConfigService::DEVELOPMENT_MODE) {
-			$auroraCollection->setTargetPath('js/aurora-complete.js');
-			$auroraCollection->setTargetUri('js/aurora-complete.js');
-            $auroraCollection->addFilter(new UglifyJS());
+			$auroraCollection->setTargetPath('js/aurora.min.js');
+			$auroraCollection->setTargetUri('js/aurora.min.js');
+			$auroraCollection->addFilter(new UglifyJS());
 		}
 	}
 
