@@ -40,7 +40,7 @@ class FlightController extends BaseController {
 		}
 		else {
 
-			 $overhead_flights_json = $this->curl_request("https://opensky-network.org/api/states/all?lamin=43.562426&lomin=-79.751627&lamax=43.622814&lomax=-79.668206");
+			$overhead_flights_json = $this->curl_request("https://opensky-network.org/api/states/all?lamin=43.562426&lomin=-79.751627&lamax=43.622814&lomax=-79.668206");
 		}
 
 		// Decode the received flights list

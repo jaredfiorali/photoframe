@@ -1,0 +1,7 @@
+{
+	"require": {
+	},
+	"require-dev": {
+		"phalcon/ide-stubs": "^3.4"
+	}
+}

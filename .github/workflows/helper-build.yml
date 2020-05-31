@@ -1,4 +1,4 @@
-name: Build Photoframe Docker Image
+name: Build Photoframe Helper Docker Image
 
 on:
   push:
@@ -16,39 +16,39 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: ${{ github.ref }}
-    - name: Slack - Photoframe build start notification
+    - name: Slack - Photoframe (Helper) build start notification
       uses: rtCamp/action-slack-notify@v2.0.2
       env:
         SLACK_COLOR: '#779ECB'
         SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-        SLACK_TITLE: 'Docker Build - Photoframe'
-        SLACK_MESSAGE: Starting the Docker build process for the Photoframe
+        SLACK_TITLE: 'Docker Build - Photoframe (Helper)'
+        SLACK_MESSAGE: Starting the Docker build process for the Photoframe (Helper)
         SLACK_USERNAME: GithubActions
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-    - name: Build and push Photoframe Docker image
+    - name: Build and push Photoframe (Helper) Docker image
       uses: docker/build-push-action@v1.1.0
       with:
-        path: .
+        path: ./helper
         repository: photoframe
         registry: registry.fiora.li
         tags: latest
-    - name: Slack - Photoframe build success notification
+    - name: Slack - Photoframe (Helper) build success notification
       if: ${{ success() }}
       uses: rtCamp/action-slack-notify@v2.0.2
       env:
         SLACK_COLOR: '#44D362'
         SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-        SLACK_TITLE: 'Docker Build - Photoframe'
-        SLACK_MESSAGE: Photoframe Docker build successfully completed!
+        SLACK_TITLE: 'Docker Build - Photoframe (Helper)'
+        SLACK_MESSAGE: Photoframe (Helper) Docker build successfully completed!
         SLACK_USERNAME: GithubActions
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-    - name: Slack - Photoframe build failed notification
+    - name: Slack - Photoframe (Helper) build failed notification
       if: ${{ failure() }}
       uses: rtCamp/action-slack-notify@v2.0.2
       env:
         SLACK_COLOR: '#FF6961'
         SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-        SLACK_TITLE: 'Docker Build - Photoframe'
-        SLACK_MESSAGE: Photoframe Docker build was unsuccessful!
+        SLACK_TITLE: 'Docker Build - Photoframe (Helper)'
+        SLACK_MESSAGE: Photoframe (Helper) Docker build was unsuccessful!
         SLACK_USERNAME: GithubActions
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
