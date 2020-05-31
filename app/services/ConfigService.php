@@ -14,56 +14,114 @@ class ConfigService extends Injectable
 	 * If we should have certain development features enabled (minification for instance)
 	 * @var boolean DEVELOPMENT_MODE
 	**/
-	const DEVELOPMENT_MODE = false;
+	public $development_mode = false;
 
 	/**
 	 * The database host
 	 * @var string DB_HOST
 	**/
-	const DB_HOST = 'mysql.mysql';
+	public $db_host = 'mysql.mysql';
 
 	/**
 	 * The username we will use to access the database
 	 * @var string DB_USERNAME
 	**/
-	const DB_USERNAME = 'photoframe';
+	public $db_username = 'photoframe';
 
 	/**
 	 * The password we will use to access the database
 	 * @var string DB_PASSWORD
 	**/
-	const DB_PASSWORD = 'fb8bda50b9f86b229be154a8e32edfc7';
+	public $db_password = 'fb8bda50b9f86b229be154a8e32edfc7';
 
 	/**
 	 * The database name we will be accessing
 	 * @var string DB_DATABASE
 	**/
-	const DB_DATABASE = 'Dashboard';
+	public $db_database = 'Dashboard';
 
-	const DARKSKY_API_KEY = 'ced23c715fea437145b3182bf1065f0c';
+    /**
+     * API key for Darksky access
+     * @var string
+     */
+	public $darksky_api_key = 'ced23c715fea437145b3182bf1065f0c';
 
-	const WEATHER_LATITUDE = '43.595844';
+    /**
+     * Latitude for the location where we intend to get weather information
+     * @var string (kind of...I mean it's really a decimal, but in string format)
+     */
+	public $weather_latitude = '43.595844';
 
-	const WEATHER_LONGITUDE = '-79.708389';
+    /**
+     * Longitude for the location where we intend to get weather information
+     * @var string (kind of...I mean it's really a decimal, but in string format)
+     */
+	public $weather_longitude = '-79.708389';
 
-	const POCKET_ACCESS_TOKENS = ['f1ee6595-6a11-198c-356c-0acf23', '6bdcd289-7c70-43bb-05c7-47252b'];
+    /**
+     * Array of access tokens for sending data to Pocket
+     * @var string[]
+     */
+	public $pocket_access_tokens = ['f1ee6595-6a11-198c-356c-0acf23', '6bdcd289-7c70-43bb-05c7-47252b'];
 
-	const POCKET_CONSUMER_KEY = '69195-1cc1c210fb7e3db337ca2b78';
+    /**
+     * Consumer key for accessing Pocket
+     * @var string
+     */
+	public $pocket_consumer_key = '69195-1cc1c210fb7e3db337ca2b78';
 
-	const NEWS_SOURCES = 'cbc-news,the-new-york-times,bbc-news';
+    /**
+     * API key for accessing news from newsapi.org
+     * @var string
+     */
+    public $news_api_key = 'fa9bfe5bd5274c81a2dc4579d0e74620';
 
-	const NEWS_API_KEY = 'fa9bfe5bd5274c81a2dc4579d0e74620';
+    /**
+     * Comma separated list of sources. Find more information below.
+     * @link https://newsapi.org/docs/endpoints/sources
+     * @var string
+     */
+	public $news_sources = 'cbc-news,the-new-york-times,bbc-news';
 
-	const PHILIPS_HUE_TOKEN = 'sOoZ7udF4PHgrQukaDM3LpnF5BW9v9DBs5frKQyG';
+    /**
+     * Width of the page we intend to present (typically tablet screen size)
+     * @var integer
+     */
+	public $page_width = 1024;
 
-	const PAGE_WIDTH = 1024;
-
-	const PAGE_HEIGHT = 569;
+    /**
+     * Height of the page we intend to present (typically tablet screen size)
+     * @var integer
+     */
+	public $page_height = 569;
 
 	/**
-	 * A constructor. Not really needed here...
+	 * Initialize the Config vars via environment variables
 	**/
 	public function __constructor() {
-		// Silence is golden
-	}
+
+        $this->development_mode = getenv('DEVELOPMENT_MODE');
+        $this->db_host = getenv('DB_HOST');
+        $this->db_username = getenv('DB_USERNAME');
+        $this->db_password = getenv('DB_PASSWORD');
+        $this->db_database = getenv('DB_DATABASE');
+        $this->darksky_api_key = getenv('DARKSKY_API_KEY');
+        $this->weather_latitude = getenv('WEATHER_LATITUDE');
+        $this->weather_longitude = getenv('WEATHER_LONGITUDE');
+        $this->pocket_access_tokens = getenv('POCKET_ACCESS_TOKENS');
+        $this->pocket_consumer_key = getenv('POCKET_CONSUMER_KEY');
+        $this->news_sources = getenv('NEWS_SOURCES');
+        $this->news_api_key = getenv('NEWS_API_KEY');
+        $this->page_width = getenv('PAGE_WIDTH');
+        $this->page_height = getenv('PAGE_HEIGHT');
+    }
+
+    /**
+     * Returns the value of the configuration (if exists)
+     * @param string $key The name of the configuration parameter we are trying to find
+     */
+    public function get_value($key = '') {
+
+        return $this->{$key} ?? null;
+    }
 }

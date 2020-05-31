@@ -121,18 +121,20 @@ $di->set(
 	}
 );
 
-// Your json service...
-$di->setShared('AuthService', function() {
+// Register our Config service for access to configuration parameters
+$di->setShared('Config', function() {
 	return new ConfigService();
 });
 
 $application = new Application($di);
 
 try {
-	// Handle the request
-	$response = $application->handle($_SERVER['REQUEST_URI']);
+    var_dump($di['Config']->get_value('DEVELOPMENT_MODE'));
 
-	$response->send();
+	// // Handle the request
+	// $response = $application->handle($_SERVER['REQUEST_URI']);
+
+	// $response->send();
 } catch (\Exception $e) {
 	$message = $e->getMessage();
 	$trace = $e->getTrace();
