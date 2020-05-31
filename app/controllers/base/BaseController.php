@@ -4,8 +4,8 @@ namespace App\Controllers\Base;
 
 use Phalcon\Mvc\Controller;
 use Phalcon\Di;
+use App\Filters\UglifyJS;
 use App\Services\ConfigService;
-use Phalcon\Assets\Filters;
 
 abstract class BaseController extends Controller {
 
@@ -48,7 +48,7 @@ abstract class BaseController extends Controller {
 		if (!ConfigService::DEVELOPMENT_MODE) {
 			$baseCollection->setTargetPath('js/base.min.js');
 			$baseCollection->setTargetUri('js/base.min.js');
-			$baseCollection->addFilter(new Filters\Jsmin());
+			$baseCollection->addFilter(new UglifyJS());
 		}
 	}
 
