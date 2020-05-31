@@ -21,11 +21,12 @@ $loader = new Loader();
 $loader->registerNamespaces([
 	'App\Controllers' => '../app/controllers/',
 	'App\Controllers\Base' => '../app/controllers/base',
-	'App\Models' => '../app/models/',
-	'App\Services' => '../app/services/',
 	'App\Enums' => '../app/enums/',
 	'App\Entities' => '../app/entities/',
 	'App\Entities\Base' => '../app/entities/base',
+	'App\Filters' => '../app/filters/',
+	'App\Models' => '../app/models/',
+	'App\Services' => '../app/services/',
 ])->register();
 
 // Register common directories

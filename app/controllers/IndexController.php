@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\Base\BaseController;
+use App\Filters\UglifyJS;
 use App\Services\ConfigService;
 use Phalcon\Assets\Filters;
 
@@ -23,7 +24,16 @@ class IndexController extends BaseController {
 		if (!ConfigService::DEVELOPMENT_MODE) {
 			$auroraCollection->setTargetPath('js/aurora.min.js');
 			$auroraCollection->setTargetUri('js/aurora.min.js');
-			$auroraCollection->addFilter(new Filters\Jsmin());
+            $auroraCollection->addFilter(
+                new UglifyJS(
+                    [
+                        'java-bin'      => '/usr/local/bin/java',
+                        'yui'           => '/some/path/yuicompressor-x.y.z.jar',
+                        'extra-options' => '--charset utf8',
+                    ]
+                )
+            );
+            $auroraCollection->addFilter(new Filters\Jsmin());
 		}
 	}
 
