@@ -865,6 +865,6 @@ $(document).ready(function() {
 	// Create the elements for the weather dashboard
 	generateInitialFrame();
 
-	//Initialize all of the timer function
+	// Initialize all of the timer function
 	resetInterval(true);
 });
