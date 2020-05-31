@@ -4,8 +4,9 @@ use Phalcon\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Volt;
 use Phalcon\Mvc\Application;
+use Phalcon\Mvc\Dispatcher;
 use Phalcon\Di\FactoryDefault;
-use Phalcon\Mvc\Url as UrlProvider;
+use Phalcon\Url as UrlProvider;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 use App\Services\ConfigService;
 
@@ -42,7 +43,7 @@ $di = new FactoryDefault();
 $di->set(
 	'dispatcher',
 	function() {
-		$dispatcher = new \Phalcon\Mvc\Dispatcher();
+		$dispatcher = new Dispatcher();
 		$dispatcher->setDefaultNamespace('App\Controllers');
 		return $dispatcher;
 });
@@ -87,8 +88,8 @@ $di->set(
 // Register Volt as a service
 $di->set(
 	'voltService',
-	function ($view, $di) {
-		$volt = new Volt($view, $di);
+	function ($view) {
+		$volt = new Volt($view);
 
 		$volt->setOptions(
 			[
@@ -128,9 +129,13 @@ $application = new Application($di);
 
 try {
 	// Handle the request
-	$response = $application->handle();
+	$response = $application->handle($_SERVER['REQUEST_URI']);
 
 	$response->send();
 } catch (\Exception $e) {
-	echo 'Exception: ', $e->getMessage();
+	$message = $e->getMessage();
+	$trace = $e->getTrace();
+
+	echo "Exception: $message\n";
+	var_dump($trace);
 }
