@@ -11,11 +11,10 @@ RUN composer install --prefer-dist --no-scripts --no-dev && rm -rf /root/.compos
 
 ADD . .
 
-EXPOSE 8080
+EXPOSE 80
 
 # By default, simply start apache.
-ENV PORT 80
-ENTRYPOINT []
-CMD sed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf && docker-php-entrypoint apache2-foreground
+RUN ["mv", "-f", "/var/www/html/photoframe.conf", "/etc/apache2/sites-enabled"]
+RUN ["mv", "-f", "/var/www/html/httpd.conf", "/etc/apache2/httpd.conf"]
 RUN ["chmod", "-R", "777", "."]
-# CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
