@@ -45,7 +45,7 @@ abstract class BaseController extends Controller {
 		$baseCollection->addJs('js/utility.js', false, true);
 
 		// Now for the custom javascript
-		if (!ConfigService::DEVELOPMENT_MODE) {
+		if (!ConfigService::get_value('development_mode')) {
 			$baseCollection->setTargetPath('js/base.min.js');
 			$baseCollection->setTargetUri('js/base.min.js');
 			$baseCollection->addFilter(new UglifyJS());

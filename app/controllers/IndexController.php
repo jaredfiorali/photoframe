@@ -20,7 +20,7 @@ class IndexController extends BaseController {
 		$auroraCollection->addJs('js/div-generator.js', false, true);
 
 		// Check to see if we are debugging
-		if (!ConfigService::DEVELOPMENT_MODE) {
+		if (!ConfigService::get_value('development_mode')) {
 			$auroraCollection->setTargetPath('js/aurora.min.js');
 			$auroraCollection->setTargetUri('js/aurora.min.js');
 			$auroraCollection->addFilter(new UglifyJS());

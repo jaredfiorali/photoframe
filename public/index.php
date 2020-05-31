@@ -74,10 +74,10 @@ $di->set(
 	'db',
 	function () {
 		return new DbAdapter([
-			'host'     => ConfigService::DB_HOST,
-			'username' => ConfigService::DB_USERNAME,
-			'password' => ConfigService::DB_PASSWORD,
-			'dbname'   => ConfigService::DB_DATABASE,
+			'host'     => ConfigService::get_value('db_host'),
+			'username' => ConfigService::get_value('db_username'),
+			'password' => ConfigService::get_value('db_password'),
+			'dbname'   => ConfigService::get_value('db_database'),
 			"options" => [
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
 				PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
@@ -124,19 +124,18 @@ $di->set(
 // Register our Config service for access to configuration parameters
 $di->setShared('Config', function() {
 	$configService = new ConfigService();
+	$configService->initialize();
 
-	return $configService->initialize();
+	return $configService;
 });
 
 $application = new Application($di);
 
 try {
-	var_dump($di['Config']->get_value('DEVELOPMENT_MODE'));
+	// Handle the request
+	$response = $application->handle($_SERVER['REQUEST_URI']);
 
-	// // Handle the request
-	// $response = $application->handle($_SERVER['REQUEST_URI']);
-
-	// $response->send();
+	$response->send();
 } catch (\Exception $e) {
 	$message = $e->getMessage();
 	$trace = $e->getTrace();

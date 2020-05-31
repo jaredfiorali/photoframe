@@ -39,7 +39,7 @@ class WeatherController extends BaseController {
 
 		// Execute the cURL request by setting the cURL options: url, # of POST vars, POST data
 		$result = $ch->execute(array (
-			CURLOPT_URL => "https://api.darksky.net/forecast/".ConfigService::DARKSKY_API_KEY."/".ConfigService::WEATHER_LATITUDE.",".ConfigService::WEATHER_LONGITUDE."?units=ca&exclude=minutely,flags",
+			CURLOPT_URL => "https://api.darksky.net/forecast/". ConfigService::get_value('darksky_api_key')."/". ConfigService::get_value('weather_latitude').",". ConfigService::get_value('weather_longitude')."?units=ca&exclude=minutely,flags",
 			CURLOPT_RETURNTRANSFER => 1,
 			CURLOPT_HEADEROPT => "Accept-Encoding: gzip"
 		));

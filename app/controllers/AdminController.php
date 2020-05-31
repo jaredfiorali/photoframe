@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Phalcon\Di;
 use App\Controllers\Base\BaseController;
 use App\Services\ConfigService;
 
@@ -77,8 +78,8 @@ class AdminController extends BaseController {
 			// Send the list of photos to the view
 			$this->view->setVar('db_photos', $results);
 			$this->view->setVar('now', date('Y-m-d'));
-			$this->view->setVar('image_width', ConfigService->page_width);
-			$this->view->setVar('image_height', ConfigService->page_height);
+			$this->view->setVar('image_width', ConfigService::get_value('page_width'));
+			$this->view->setVar('image_height', ConfigService::get_value('page_height'));
 
 			// Select the view we intend to display
 			$this->view->pick('admin/photoManagement');

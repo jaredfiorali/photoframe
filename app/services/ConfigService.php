@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Phalcon\DI;
 use Phalcon\DI\Injectable;
 
 /**
@@ -124,9 +125,19 @@ class ConfigService extends Injectable
 
 	/**
 	 * Returns the value of the configuration (if exists)
+	 * Accessed statically so it's easier to look at externally :P
 	 * @param string $key The name of the configuration parameter we are trying to find
 	 */
-	public function get_value($key = '') {
+	public static function get_value($key = '') {
+
+		return Di::getDefault()['Config']->value($key);
+	}
+
+	/**
+	 * Returns the value of the configuration (if exists)
+	 * @param string $key The name of the configuration parameter we are trying to find
+	 */
+	private function value($key = '') {
 
 		return $this->{$key} ?? null;
 	}
