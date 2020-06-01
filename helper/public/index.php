@@ -1,38 +1,40 @@
 <?php
 
 use Phalcon\Mvc\Micro;
+use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 
 $app = new Micro();
 
+// Setup the database service
+$app['db'] = function () {
+	return new DbAdapter([
+		'host'     => getenv('DB_HOST'),
+		'username' => getenv('DB_USERNAME'),
+		'password' => getenv('DB_PASSWORD'),
+		'dbname'   => getenv('DB_DATABASE'),
+		"options" => [
+			PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
+			PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
+		],
+	]);
+};
+
 // Sets up a lister for the weather service
 $app->get(
-    '/listenWeather',
-    function () {
-        $this->response->setHeader('Content-Type', 'text/event-stream');
+	'/listenWeather',
+	function () use ($app) {
+		$this->response->setHeader('Content-Type', 'text/event-stream');
 
-        $counter = rand(1, 10);
-        while (true) {
-            // Every second, send a "ping" event.
+		$counter = rand(1, 10);
+		while (true) {
+			$result = $app['db']->fetchOne("CALL getWeather()");
 
-            echo "event: ping\n";
-            $curDate = date(DATE_ISO8601);
-            echo 'data: {"time": "' . $curDate . '"}';
-            echo "\n\n";
+			echo $result;
 
-            // Send a simple message at random intervals.
-
-            $counter--;
-
-            if (!$counter) {
-                echo 'data: This is a message at time ' . $curDate . "\n\n";
-                $counter = rand(1, 10);
-            }
-
-            ob_end_flush();
-            flush();
-            sleep(1);
-        }
-    }
+			flush();
+			sleep(1);
+		}
+	}
 );
 
 $app->handle($_SERVER['REQUEST_URI']);
