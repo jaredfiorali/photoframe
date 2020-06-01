@@ -61,4 +61,59 @@ $app->get(
 	}
 );
 
+// Sets up a lister for the weather service
+$app->get(
+	'/listenTest',
+	function () use ($app) {
+
+		// SSE needs to be set to 'text/event-stream', and since we are accepting connections from photoframe.fiora.li...CORS
+		$this->response->setHeader('Content-Type', 'text/event-stream');
+		$this->response->setHeader('Cache-Control', 'no-cache');
+		$this->response->setHeader('Access-Control-Allow-Origin', '*');
+		$this->response->setHeader('Access-Control-Allow-Headers', 'X-Requested-With');
+		$this->response->sendHeaders();
+
+		// A random counter
+		$counter = rand(1, 10);
+
+		// 1 is always true, so repeat the while loop forever (aka event-loop)
+		while (1) {
+
+			$curDate = date(DATE_ISO8601);
+			echo "event: ping\n", 'data: {"time": "' . $curDate . '"}', "\n\n";
+
+			// Continue to decrement the counter
+			$counter--;
+
+			// Check to see if the counter has finally reached 0
+			if ($counter == 0) {
+
+				echo 'data: This is a message at time ' . $curDate, "\n\n";
+
+				// Reset random counter
+				$counter = rand(1, 10);
+			}
+
+			// Flush the output buffer and send echoed messages to the browser
+			while (ob_get_level() > 0) {
+				ob_end_flush();
+			}
+
+			// Clear the output buffer
+			flush();
+
+			// Break the loop if the client aborted the connection (closed the page)
+			if (connection_aborted()) {
+
+				break;
+			}
+
+			// Sleep for 1 second before running the loop again
+			sleep(1);
+		}
+	}
+);
+
+
+
 $app->handle($_SERVER['REQUEST_URI']);
