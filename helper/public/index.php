@@ -20,8 +20,11 @@ $app->get(
 	'/listenWeather',
 	function () use ($app) {
 
-		// SSE needs to be set to 'text/event-stream'
+		// SSE needs to be set to 'text/event-stream', and since we are accepting connections from photoframe.fiora.li...CORS
 		$this->response->setHeader('Content-Type', 'text/event-stream');
+		$this->response->setHeader('Access-Control-Allow-Origin', '*');
+		$this->response->setHeader('Access-Control-Allow-Headers', 'X-Requested-With');
+		$this->response->sendHeaders();
 
 		// Start knowing nothing
 		$weather = '';
@@ -40,7 +43,7 @@ $app->get(
 			// Confirm that something has changed from what we knew before
 			if ($weather != $weather_result) {
 
-				error_log('Weather information has updated. Posting to client via SSE.');
+				error_log('----------Weather information has updated, posting to client via SSE----------');
 
 				// Update the saved weather result with the new one
 				$weather = $weather_result;
