@@ -6,7 +6,7 @@ $app = new Micro();
 
 // Sets up a lister for the weather service
 $app->get(
-    '/api/listenWeather',
+    '/listenWeather',
     function () {
         $this->response->setHeader('Content-Type', 'text/event-stream');
 
@@ -35,4 +35,4 @@ $app->get(
     }
 );
 
-$app->handle();
+$app->handle($_SERVER['REQUEST_URI']);
