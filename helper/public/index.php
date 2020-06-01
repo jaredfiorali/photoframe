@@ -12,10 +12,6 @@ $app['db'] = function () {
 		'username' => getenv('DB_USERNAME'),
 		'password' => getenv('DB_PASSWORD'),
 		'dbname'   => getenv('DB_DATABASE'),
-		"options" => [
-			PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
-			PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
-		],
 	]);
 };
 
@@ -25,14 +21,20 @@ $app->get(
 	function () use ($app) {
 		$this->response->setHeader('Content-Type', 'text/event-stream');
 
-		$counter = rand(1, 10);
+		$weather = null;
+
 		while (true) {
 			$result = $app['db']->fetchOne("CALL getWeather()");
+			$weather_result = $result['weather'];
 
-			echo $result;
+			if ($weather != $weather_result) {
+
+				$weather = $weather_result;
+				echo $weather_result;
+			}
 
 			flush();
-			sleep(1);
+			sleep(120);
 		}
 	}
 );
