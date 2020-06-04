@@ -80,7 +80,7 @@ class NewsController extends BaseController {
 				$height = $image_original[1] ?? null;
 				$mime = $image_original['mime'] ?? null;
 
-				// Confirm we were able to extrat all required image properties
+				// Confirm we were able to extract all required image properties
 				if ($width and $height and $mime) {
 
 					// Get a reference to our array which describes how to handle variable media types
