@@ -15,6 +15,6 @@ class ConfigController extends BaseController {
 			'branch' => 'master',
 		]);
 
-		return $git->data;
+		return json_encode($git->data);
 	}
 }
