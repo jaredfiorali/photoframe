@@ -4,7 +4,7 @@ RUN mkdir -p /var/www/html
 RUN mkdir -p /etc/apache2/sites-enabled
 WORKDIR /var/www/html
 
-RUN apk --no-cache add uglify-js php7 php7-pdo_mysql apache2 php7-apache2 php7-phalcon composer
+RUN apk --no-cache add php7 php7-pdo_mysql apache2 php7-apache2 php7-phalcon composer
 
 ADD composer.json .
 RUN composer install --prefer-dist --no-scripts --no-dev && rm -rf /root/.composer
