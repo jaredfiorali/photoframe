@@ -13,7 +13,12 @@ class HealthzController extends BaseController {
 	public function indexAction() {
 
 		// Update our response with the status we received
-		$this->generateResponse($this->getStatus());
+		$status = $this->getStatus();
+
+		// Set the status code
+		$this->response->setStatusCode($status->code, $status->message);
+
+		return $status->data;
 	}
 
 	/**
@@ -36,18 +41,5 @@ class HealthzController extends BaseController {
 
 		// Return our status object (or create a success if we don't have one already)
 		return $status ?? new Status(['success' => true]);
-	}
-
-	/**
-	 * Sets required parameters of the response object
-	 * @param Status $status A status object containing details we need
-	 */
-	private function generateResponse($status) {
-
-		// Set the status code
-		$this->response->setStatusCode($status->code, $status->message);
-
-		// Save our json in the response object
-		$this->response->setJsonContent($status->data);
 	}
 }

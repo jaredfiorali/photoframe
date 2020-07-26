@@ -98,6 +98,9 @@ abstract class BaseController extends Controller {
 	 */
 	public function afterExecuteRoute($dispatcher) {
 
+		// Save our json in the response object
+		$this->response->setJsonContent($dispatcher->getReturnedValue());
+
 		// Send the version to the FE
 		return $this->response;
 	}

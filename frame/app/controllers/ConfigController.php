@@ -15,7 +15,6 @@ class ConfigController extends BaseController {
 			'branch' => 'master',
 		]);
 
-		// Save our json in the response object
-		$this->response->setJsonContent($git->data);
+		return $git->data;
 	}
 }

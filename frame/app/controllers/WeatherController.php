@@ -18,8 +18,8 @@ class WeatherController extends BaseController {
 		// Create a new weather object from our DB data
 		$weather = new Weather($db_results);
 
-		// Save our json in the response object
-		$this->response->setJsonContent($weather->data);
+		// Return our data
+		return $weather->data
 	}
 
 	/** @inheritdoc	 */

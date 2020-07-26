@@ -8,7 +8,7 @@ class BaseEntity {
 	 * The data we received from the DB
 	 * @var array
 	 */
-	protected $data;
+	public $data;
 
 	/**
 	 * The data we intend to send to the FE, in json
