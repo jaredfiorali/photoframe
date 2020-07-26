@@ -8,24 +8,18 @@ variables:
   KUBECONFIG: /tmp/config
 
 stages:
-  - build_and_push_frame
-  - build_and_push_helper
+  - build_and_push_images
   - deploy_to_production
 
 
-build_and_push_frame:
-  stage: build_and_push_frame
+build_and_push_images:
+  stage: build_and_push_images
   image: docker:latest
   script:
     - cd frame
     - docker build --network host -t registry.fiora.li/photoframe:latest .
     - docker push registry.fiora.li/photoframe
-
-build_and_push_helper:
-  stage: build_and_push_helper
-  image: docker:latest
-  script:
-    - cd frame
+	- cd ../helper
     - docker build --network host -t registry.fiora.li/photoframe_helper:latest .
     - docker push registry.fiora.li/photoframe_helper
 
