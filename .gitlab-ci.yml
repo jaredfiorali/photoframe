@@ -1,0 +1,29 @@
+services:
+- docker:dind
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375
+  KUBECONFIG: /tmp/config
+
+stages:
+  - build_and_push_image
+  - deploy_to_production
+
+
+build_and_push_image:
+  stage: build_and_push_image
+  image: docker:latest
+  script:
+    - cd frame
+    - docker build --network host -t registry.fiora.li/photoframe:latest .
+    - docker push registry.fiora.li/photoframe
+
+deploy_to_production:
+  stage: deploy_to_production
+  image: bitnami/kubectl
+  script:
+    - echo ${kube_config} | base64 -d > "${KUBECONFIG}"
+    - kubectl config use-context microk8s
+    - kubectl rollout restart deployment/photoframe -nphotoframe
