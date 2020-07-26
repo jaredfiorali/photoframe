@@ -19,7 +19,7 @@ class WeatherController extends BaseController {
 		$weather = new Weather($db_results);
 
 		// Return our data
-		return $weather->data
+		return $weather->data;
 	}
 
 	/** @inheritdoc	 */

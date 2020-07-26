@@ -23,7 +23,7 @@ class WasteController extends BaseController {
 		$waste = new Waste($db_results);
 
 		// Return our data
-		return $waste->data
+		return json_encode($waste->data);
 	}
 
 	/** @inheritdoc	 */

@@ -32,4 +32,9 @@ class IndexController extends BaseController {
 	 */
 	public function mainAction() {
 	}
+
+	/** @inheritdoc	 */
+	public function afterExecuteRoute($dispatcher) {
+		// Do nothing, so we simply return the view instead of returning JSON
+	}
 }

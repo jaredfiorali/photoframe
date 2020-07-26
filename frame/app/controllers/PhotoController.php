@@ -25,6 +25,6 @@ class PhotoController extends BaseController {
 		$photo = new Photo($db_results);
 
 		// Return our data
-		return $photo->data
+		return json_encode($photo->data);
 	}
 }

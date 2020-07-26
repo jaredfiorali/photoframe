@@ -42,7 +42,7 @@ class NewsController extends BaseController {
 		$news = new News($db_results);
 
 		// Return our data
-		return $news->data
+		return $news->data;
 	}
 
 	/** @inheritdoc	 */
