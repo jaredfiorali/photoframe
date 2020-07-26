@@ -17,8 +17,5 @@ class ConfigController extends BaseController {
 
 		// Save our json in the response object
 		$this->response->setContent($git->to_json());
-
-		// Send the version to the FE
-		return $this->response;
 	}
 }

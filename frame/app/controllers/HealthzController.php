@@ -45,7 +45,7 @@ class HealthzController extends BaseController {
 	private function generateResponse($status) {
 
 		// Set the status code
-		$this->response->setStatusCode($status->code, $status->code_message);
+		$this->response->setStatusCode($status->code, $status->message);
 
 		// It's always JSON
 		$this->response->setHeader("Content-Type", "application/json");

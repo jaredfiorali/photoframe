@@ -26,9 +26,6 @@ class WeatherController extends BaseController {
 
 		// Save our json in the response object
 		$this->response->setContent($weather->to_json());
-
-		// Send the version to the FE
-		return $this->response;
 	}
 
 	/** @inheritdoc	 */

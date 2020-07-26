@@ -92,4 +92,13 @@ abstract class BaseController extends Controller {
 
 		return $result;
 	}
+
+	/**
+	 * Always executes after a controller action
+	 */
+	public function afterExecuteRoute($dispatcher) {
+
+		// Send the version to the FE
+		return $this->response;
+	}
 }

@@ -12,13 +12,13 @@ class Status extends BaseEntity {
 	private const STATUS_TYPES = [
 		'success' => [
 			'code' => 200,
-			'code_message' => 'OK',
-			'message' => '{"status": "All services are operational"}'
+			'message' => 'OK',
+			'data' => '{"status": "All services are operational"}'
 		],
 		'error' => [
 			'code' => 500,
-			'code_message' => 'Internal Server Error',
-			'message' => '{"status": "Some services are unavailable"}'
+			'message' => 'Internal Server Error',
+			'data' => '{"status": "Some services are unavailable"}'
 		],
 	];
 
@@ -30,9 +30,9 @@ class Status extends BaseEntity {
 
 	/**
 	 * The friendly message for our HTTP status code
-	 * @var string $code_message
+	 * @var string $message
 	 */
-	public $code_message = '';
+	public $message = '';
 
 	/**
 	 * The response we intend to send to the FE
@@ -56,14 +56,14 @@ class Status extends BaseEntity {
 		if ($success) {
 
 			$this->code = Status::STATUS_TYPES['success']['code'];
-			$this->code_message = Status::STATUS_TYPES['success']['code_message'];
 			$this->message = Status::STATUS_TYPES['success']['message'];
+			$this->data = Status::STATUS_TYPES['success']['data'];
 		}
 		else {
 
 			$this->code = Status::STATUS_TYPES['error']['code'];
-			$this->code_message = Status::STATUS_TYPES['error']['code_message'];
 			$this->message = Status::STATUS_TYPES['error']['message'];
+			$this->data = Status::STATUS_TYPES['error']['data'];
 		}
 	}
 }

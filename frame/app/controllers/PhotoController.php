@@ -26,8 +26,5 @@ class PhotoController extends BaseController {
 
 		// Save our json in the response object
 		$this->response->setContent($photo->to_json());
-
-		// Send the version to the FE
-		return $this->response;
 	}
 }
