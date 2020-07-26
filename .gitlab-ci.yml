@@ -19,7 +19,7 @@ build_and_push_images:
     - cd frame
     - docker build --network host -t registry.fiora.li/photoframe:latest .
     - docker push registry.fiora.li/photoframe
-	- cd ../helper
+    - cd ../helper
     - docker build --network host -t registry.fiora.li/photoframe_helper:latest .
     - docker push registry.fiora.li/photoframe_helper
 
