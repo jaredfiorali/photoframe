@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use Phalcon\Di;
 use App\Controllers\Base\BaseController;
 use App\Services\ConfigService;
 

@@ -9,8 +9,8 @@ use Phalcon\DI\Injectable;
  * A collection of constants which are used all over this application
  * One-stop shop!
 **/
-class ConfigService extends Injectable
-{
+class ConfigService extends Injectable {
+
 	/**
 	 * If we should have certain development features enabled (minification for instance)
 	 * @var boolean DEVELOPMENT_MODE
