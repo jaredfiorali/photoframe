@@ -107,7 +107,7 @@ class ConfigService extends Injectable
 	 * Initialize the Config vars via environment variables
 	 */
 	public function initialize() {
-		$this->development_mode = getenv('DEVELOPMENT_MODE');
+		$this->development_mode = (bool)getenv('DEVELOPMENT_MODE');
 		$this->db_host = getenv('DB_HOST');
 		$this->db_username = getenv('DB_USERNAME');
 		$this->db_password = getenv('DB_PASSWORD');
@@ -119,8 +119,8 @@ class ConfigService extends Injectable
 		$this->pocket_consumer_key = getenv('POCKET_CONSUMER_KEY');
 		$this->news_sources = getenv('NEWS_SOURCES');
 		$this->news_api_key = getenv('NEWS_API_KEY');
-		$this->page_width = getenv('PAGE_WIDTH');
-		$this->page_height = getenv('PAGE_HEIGHT');
+		$this->page_width = (int)getenv('PAGE_WIDTH');
+		$this->page_height = (int)getenv('PAGE_HEIGHT');
 	}
 
 	/**
