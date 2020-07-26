@@ -22,14 +22,8 @@ class WasteController extends BaseController {
 		// Create a new waste object from our DB data
 		$waste = new Waste($db_results);
 
-		// Set this as a success
-		$this->response->setStatusCode(200, "OK");
-
-		// Set our header to json
-		$this->response->setHeader("Content-Type", "application/json");
-
 		// Save our json in the response object
-		$this->response->setContent($waste->to_json());
+		$this->response->setJsonContent($waste->data);
 	}
 
 	/** @inheritdoc	 */

@@ -52,7 +52,7 @@ class AdminController extends BaseController {
 
 				if ($param === 'upload_preview') {
 
-					$this->response->setContent(json_encode($json_array));
+					$this->response->setJsonContent($json_array);
 
 					return $this->response;
 				}
@@ -61,11 +61,6 @@ class AdminController extends BaseController {
 					// Prepare and execute the MySQL statement
 					$db_results = $this->db->execute("INSERT into photos (photo, location, date_taken) VALUES ('$image_base64', '$location', '$date_taken')");
 				}
-			}
-			else if ($param == 'update') {
-
-				// Set our header to json
-				$this->response->setHeader("Content-Type", "application/json");
 			}
 		}
 		// Default action please
@@ -91,9 +86,6 @@ class AdminController extends BaseController {
 		// Start by assuming we won't get anything
 		$data = null;
 
-		// Set our header to json
-		$this->response->setHeader("Content-Type", "application/json");
-
 		// Photo route
 		if ($param_one == 'photo') {
 
@@ -117,7 +109,7 @@ class AdminController extends BaseController {
 		}
 
 		// Respond to the FE
-		$this->response->setContent(json_encode($data));
+		$this->response->setJsonContent($data);
 
 		return $this->response;
 	}

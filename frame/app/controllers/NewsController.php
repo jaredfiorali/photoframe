@@ -42,7 +42,7 @@ class NewsController extends BaseController {
 		$news = new News($db_results);
 
 		// Save our json in the response object
-		$this->response->setContent($news->to_json());
+		$this->response->setJsonContent($news->data);
 	}
 
 	/** @inheritdoc	 */

@@ -25,6 +25,6 @@ class PhotoController extends BaseController {
 		$photo = new Photo($db_results);
 
 		// Save our json in the response object
-		$this->response->setContent($photo->to_json());
+		$this->response->setJsonContent($photo->data);
 	}
 }
