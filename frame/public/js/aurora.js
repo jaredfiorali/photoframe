@@ -2,7 +2,6 @@ var weatherJSON = "",
 	newsJSON = "",
 	remindersJSON = "",
 	getP = 0,
-	getW = 0,
 	getN = 0,
 	getR = 0,
 	getT = 0,
@@ -94,13 +93,11 @@ function resetInterval(initial) {
 
 	// Clear any timers we had for our endpoints
 	clearInterval(getP);
-	clearInterval(getW);
 	clearInterval(getN);
 	clearInterval(getR);
 
 	// Initialize our endpoint timers
 	getP = setInterval(getPhoto, 10000);
-	getW = setInterval(getWeather, 60000);
 	getN = setInterval(getNews, 500000);
 	getR = setInterval(getReminders, 500000);
 }
@@ -547,7 +544,25 @@ function processConfig(result, initial) {
  */
 function getWeather(initial) {
 
-	callServer("weather/get", processWeather, initial, "weather", errorWeather);
+	if (!!window.EventSource) {
+		var source = new EventSource('http://api.photoframe.fiora.li/listenWeather');
+	} else {
+		// Result to xhr polling :(
+	}
+
+	source.addEventListener('message', function (e) {
+		processWeather(JSON.parse(e.data), initial);
+	}, false);
+
+	source.addEventListener('open', function (e) {
+		// Connection was opened.
+	}, false);
+
+	source.addEventListener('error', function (e) {
+		if (e.readyState == EventSource.CLOSED) {
+			// Connection was closed.
+		}
+	}, false);
 }
 
 /**
