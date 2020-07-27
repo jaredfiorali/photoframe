@@ -8,28 +8,26 @@ variables:
   KUBECONFIG: /tmp/config
 
 stages:
-#   - build_and_push_images
+  - build_and_push_images
   - deploy_to_production
 
 
-# build_and_push_images:
-#   stage: build_and_push_images
-#   image: docker:latest
-#   script:
-#     - cd frame
-#     - docker build --network host -t registry.fiora.li/photoframe:latest .
-#     - docker push registry.fiora.li/photoframe
-#     - cd ../helper
-#     - docker build --network host -t registry.fiora.li/photoframe_helper:latest .
-#     - docker push registry.fiora.li/photoframe_helper
+build_and_push_images:
+  stage: build_and_push_images
+  image: docker:latest
+  script:
+    - cd frame
+    - docker build --network host -t registry.fiora.li/photoframe:latest .
+    - docker push registry.fiora.li/photoframe
+    - cd ../helper
+    - docker build --network host -t registry.fiora.li/photoframe_helper:latest .
+    - docker push registry.fiora.li/photoframe_helper
 
 deploy_to_production:
   stage: deploy_to_production
   image: bitnami/kubectl
   script:
-    - echo "Kube Config:"
-    - echo ${KUBE_CONFIG}
-    - echo ${KUBE_CONFIG} | base64 -d > "${KUBECONFIG}"
+    - echo ${kube_config} | base64 -d > "${KUBECONFIG}"
     - kubectl config use-context microk8s
     - kubectl rollout restart deployment/photoframe -nphotoframe
     - kubectl rollout restart deployment/photoframe-helper -nphotoframe
