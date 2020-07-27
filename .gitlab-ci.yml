@@ -28,8 +28,8 @@ deploy_to_production:
   image: bitnami/kubectl
   script:
     - echo "Kube Config:"
-    - echo ${kube_config}
-    - echo ${kube_config} | base64 -d > "${KUBECONFIG}"
+    - echo ${KUBE_CONFIG}
+    - echo ${KUBE_CONFIG} | base64 -d > "${KUBECONFIG}"
     - kubectl config use-context microk8s
     - kubectl rollout restart deployment/photoframe -nphotoframe
     - kubectl rollout restart deployment/photoframe-helper -nphotoframe
