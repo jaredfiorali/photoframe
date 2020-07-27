@@ -539,13 +539,13 @@ function processConfig(result, initial) {
 }
 
 /**
- * Retreives the weather information from our API
+ * Retrieves the weather information from our API
  * @param  {boolean} initial - Whether or not this is the initial load of the site
  */
 function getWeather(initial) {
 
 	if (!!window.EventSource) {
-		var source = new EventSource('http://api.photoframe.fiora.li/listenWeather');
+		var source = new EventSource('http://192.168.20.63/listenWeather');
 	} else {
 		// Result to xhr polling :(
 	}
