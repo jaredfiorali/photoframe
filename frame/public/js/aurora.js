@@ -548,7 +548,7 @@ function processConfig(result, initial) {
 function getWeather(initial) {
 
 	// Check to see if we can use SSE
-	if (!!window.EventSource) {
+	if (!!window.EventSource && initial) {
 		var source = new EventSource('weather/sse');
 
 		source.addEventListener('message', function (e) {
