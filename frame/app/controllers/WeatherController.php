@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\Base\BaseController;
+use App\Entities\Photo;
 use App\Entities\Weather;
 use App\Entities\Curl;
 use App\Services\ConfigService;
