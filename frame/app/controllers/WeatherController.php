@@ -76,8 +76,12 @@ class WeatherController extends BaseController {
 				exit();
 			}
 
-			// Get the weather from the database
+			// Start with nothing
+			$json_results = [];
+
+			// Get the weather and photo from the database
 			$weather_result = $this->db->fetchOne("CALL getWeather()")['weather'] ?? null;
+			$photo_result = $this->db->fetchOne("CALL randomPhoto()");
 
 			// Confirm that something has changed from what we knew before
 			if ($weather != $weather_result) {
@@ -86,14 +90,19 @@ class WeatherController extends BaseController {
 				$weather = $weather_result;
 
 				// Echo it so the client will pick up the latest data
-				echo 'data: ' . $weather, "\n\n";
+				$results['weather'] = $weather;
 			}
-			else {
 
-				// Echo it so the client will pick up the latest data
-				$current_date = date(DATE_ISO8601);
-				echo "event: ping\n", 'data: {"time": "' . $current_date . '"}', "\n\n";
-			}
+			// Prepare and execute the MySQL statement
+			$db_results = $this->db->fetchOne("CALL randomPhoto()");
+
+			// Create a new photo object from our DB data
+			$photo = new Photo($db_results);
+
+			// Add photos to the result
+			$results['photo'] = $photo->data;
+
+			echo 'data: ' . json_encode($result), "\n\n";
 
 			// Flush the output buffer
 			@ob_end_flush();

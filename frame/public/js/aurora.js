@@ -1,7 +1,6 @@
 var weatherJSON = "",
 	newsJSON = "",
 	remindersJSON = "",
-	getP = 0,
 	getW = 0,
 	getN = 0,
 	getR = 0,
@@ -63,9 +62,6 @@ var weatherJSON = "",
  */
 function resetInterval(initial) {
 
-	// Add a special colour assigned to the temperature indicating that we are waiting for the API call to return
-	document.getElementById("apparentTemperature").classList.add("apiWait");
-
 	// If this it the first time starting up, let's initialize our timer...timer
 	if (initial) {
 
@@ -84,7 +80,6 @@ function resetInterval(initial) {
 	}
 
 	// Get our initial information from the BE endpoints
-	getPhoto(initial);
 	getWeather(initial);
 	getNews(initial);
 	getReminders(initial);
@@ -93,13 +88,11 @@ function resetInterval(initial) {
 	// getConfig(initial);
 
 	// Clear any timers we had for our endpoints
-	clearInterval(getP);
 	clearInterval(getW);
 	clearInterval(getN);
 	clearInterval(getR);
 
 	// Initialize our endpoint timers
-	getP = setInterval(getPhoto, 10000);
 	getW = setInterval(getWeather, 60000);
 	getN = setInterval(getNews, 500000);
 	getR = setInterval(getReminders, 500000);
@@ -552,7 +545,8 @@ function getWeather(initial) {
 		var source = new EventSource('weather/sse');
 
 		source.addEventListener('message', function (e) {
-			processWeather(JSON.parse(e.data), initial);
+			processWeather(JSON.parse(e.data.weather), initial);
+			processPhoto(JSON.parse(e.data.photo), initial);
 		}, false);
 
 		source.addEventListener('open', function (e) {
@@ -637,9 +631,6 @@ function processWeather(result, initial) {
 			document.getElementById('hourlyTemp' + classname).innerHTML = formatWeather(weatherJSON.hourly.data[j].apparentTemperature, 'roundNumber');
 		}
 	}
-
-	// Remove the special colour assigned to the temperature indicating that we are waiting for the API call to return
-	document.getElementById("apparentTemperature").classList.remove("apiWait");
 }
 
 /**
@@ -677,11 +668,7 @@ function changePhoto(primaryClass, secondaryClass) {
 
 	// Fade primaryClass front, and fade secondaryClass out
 	$(primaryClass).fadeIn(0);
-	$(secondaryClass).fadeOut(2500, function(initial) {
-
-		// After we have finished fading the old photo out, let's update the offscreen photo
-		callServer("photo/get", processPhoto, initial, "photo", errorPhoto);
-	});
+	$(secondaryClass).fadeOut(2500);
 
 	// Update the location of the photo
 	document.getElementById('topLocation').innerHTML = arrPhotoLocation[(1 - photoClass)];
