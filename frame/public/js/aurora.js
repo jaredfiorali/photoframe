@@ -547,9 +547,11 @@ function getWeather(initial) {
 			var source = new EventSource('weather/sse');
 	
 			source.addEventListener('message', function (e) {
-				let jsonResult = JSON.parse(e.data);
-				processWeather(jsonResult.weather, initial);
-				processPhoto(jsonResult.photo, initial);
+				let result = JSON.parse(e.data);
+				
+				// TODO: Re-parsing this shouldn't be necessary...
+				processWeather(JSON.parse(result.weather), initial);
+				processPhoto(JSON.parse(result.photo), initial);
 			}, false);
 	
 			source.addEventListener('open', function (e) {
@@ -562,15 +564,10 @@ function getWeather(initial) {
 				}
 			}, false);
 		}
-		// SSE not allowed on this client...
-		else {
-	
-			// TODO: jfiorali - This will be deprecated in the future
-			callServer("config/get", processConfig, initial, "config", errorConfig);
-		}
 	}
 	catch (err) {
 
+		// Show the error
 		alert(err);
 	}
 }

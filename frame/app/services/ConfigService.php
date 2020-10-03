@@ -15,7 +15,7 @@ class ConfigService extends Injectable {
 	 * If we should have certain development features enabled (minification for instance)
 	 * @var boolean DEVELOPMENT_MODE
 	**/
-	public $development_mode = true;
+	public $development_mode = false;
 
 	/**
 	 * The database host
