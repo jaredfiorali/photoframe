@@ -102,7 +102,7 @@ class WeatherController extends BaseController {
 			// Add photos to the result
 			$results['photo'] = $photo->data;
 
-			echo 'data: ' . json_encode($result), "\n\n";
+			echo 'data: ' . json_encode($results), "\n\n";
 
 			// Flush the output buffer
 			@ob_end_flush();

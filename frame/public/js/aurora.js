@@ -540,30 +540,37 @@ function processConfig(result, initial) {
  */
 function getWeather(initial) {
 
-	// Check to see if we can use SSE
-	if (!!window.EventSource && initial) {
-		var source = new EventSource('weather/sse');
+	try {
 
-		source.addEventListener('message', function (e) {
-			processWeather(JSON.parse(e.data.weather), initial);
-			processPhoto(JSON.parse(e.data.photo), initial);
-		}, false);
-
-		source.addEventListener('open', function (e) {
-			// Connection was opened.
-		}, false);
-
-		source.addEventListener('error', function (e) {
-			if (e.readyState == EventSource.CLOSED) {
-				// TODO: jfiorali - Configure this to show an alert on the FE
-			}
-		}, false);
+		// Check to see if we can use SSE
+		if (!!window.EventSource && initial) {
+			var source = new EventSource('weather/sse');
+	
+			source.addEventListener('message', function (e) {
+				processWeather(JSON.parse(e.data.weather), initial);
+				processPhoto(JSON.parse(e.data.photo), initial);
+			}, false);
+	
+			source.addEventListener('open', function (e) {
+				// Connection was opened.
+			}, false);
+	
+			source.addEventListener('error', function (e) {
+				if (e.readyState == EventSource.CLOSED) {
+					// TODO: jfiorali - Configure this to show an alert on the FE
+				}
+			}, false);
+		}
+		// SSE not allowed on this client...
+		else {
+	
+			// TODO: jfiorali - This will be deprecated in the future
+			callServer("config/get", processConfig, initial, "config", errorConfig);
+		}
 	}
-	// SSE not allowed on this client...
-	else {
+	catch (err) {
 
-		// TODO: jfiorali - This will be deprecated in the future
-		callServer("config/get", processConfig, initial, "config", errorConfig);
+		alert(err);
 	}
 }
 
