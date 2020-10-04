@@ -551,16 +551,9 @@ function getWeather(initial) {
 	
 				source.addEventListener('message', function (e) {
 					var result = JSON.parse(e.data);
-					var currentTime = Date.now();
-					var serverTime = result.time;
-					var differenceTime = currentTime - serverTime;
-
-					console.log("The current time is: " + currentTime);
-					console.log("The time from the server is: " + serverTime);
-					console.log("The difference is: " + differenceTime);
 
 					// Check to see if the incoming date is within 15 seconds, if so let's process it
-					if ((Date.now() - 15) > result.time) {
+					if ((Date.now() - result.time) < 15) {
 
 						processWeather(result.weather, false);
 						processPhoto(result.photo, false);
@@ -568,10 +561,6 @@ function getWeather(initial) {
 				}, false);
 		
 				source.addEventListener('open', function (e) {
-					var result = JSON.parse(e.data);
-					
-					processWeather(result.weather, true);
-					processPhoto(result.photo, true);
 				}, false);
 		
 				source.addEventListener('error', function (e) {
@@ -701,13 +690,13 @@ function changePhoto(primaryClass, secondaryClass) {
  * @param  {string} result - The response from an API call
  * @param  {boolean} initial - Whether or not this is the initial load of the site
  */
-function processPhoto(result, initial) {
+function processPhoto(result) {
 
 	// Nothing to run if there's no result!
 	if (result) {
 
-		// Just load the photos if this is the first launch
-		if (initial) {
+		// Check to see if we have a location, and if we don't then this is the first load
+		if (document.getElementById('topLocation').innerHTML == "") {
 
 			// Assign the same photo and location to both background divs
 			for (var i = 0; i < 2; i++) {
@@ -721,12 +710,18 @@ function processPhoto(result, initial) {
 		}
 		// This is normal operation. Let's swap photos
 		else {
-
+			
 			// Grab the latest photo
 			$(arrPhotoClass[photoClass]).css('background-image', 'url(data:image/jpeg;base64,' + result.photo + ')');
 
 			// Update the photo location
 			arrPhotoLocation[photoClass] = result.location;
+
+			// Remember which photo we are on
+			photoClass = 1 - photoClass;
+
+			// Change photos!
+			changePhoto(arrPhotoClass[photoClass], arrPhotoClass[(1 - photoClass)]);
 		}
 	}
 }
