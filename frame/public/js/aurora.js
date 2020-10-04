@@ -549,9 +549,8 @@ function getWeather(initial) {
 			source.addEventListener('message', function (e) {
 				let result = JSON.parse(e.data);
 				
-				// TODO: Re-parsing this shouldn't be necessary...
-				processWeather(JSON.parse(result.weather), initial);
-				processPhoto(JSON.parse(result.photo), initial);
+				processWeather(result.weather, initial);
+				processPhoto(result.photo, initial);
 			}, false);
 	
 			source.addEventListener('open', function (e) {

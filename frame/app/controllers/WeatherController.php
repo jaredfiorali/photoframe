@@ -91,7 +91,7 @@ class WeatherController extends BaseController {
 				$weather = $weather_result;
 
 				// Echo it so the client will pick up the latest data
-				$results['weather'] = $weather;
+				$results['weather'] = json_decode($weather);
 			}
 
 			// Prepare and execute the MySQL statement
