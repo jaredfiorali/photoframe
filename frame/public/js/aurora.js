@@ -553,7 +553,7 @@ function getWeather(initial) {
 					var result = JSON.parse(e.data);
 
 					// Check to see if the incoming date is within 15 seconds, if so let's process it
-					if ((Date.now() - result.time) < 15) {
+					if (((Date.now()/1000) - result.time) < 15) {
 
 						processWeather(result.weather, false);
 						processPhoto(result.photo, false);
@@ -721,7 +721,7 @@ function processPhoto(result) {
 			photoClass = 1 - photoClass;
 
 			// Change photos!
-			changePhoto(arrPhotoClass[photoClass], arrPhotoClass[(1 - photoClass)]);
+			changePhoto(arrPhotoClass[(1 - photoClass)], arrPhotoClass[photoClass]);
 		}
 	}
 }
