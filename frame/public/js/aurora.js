@@ -542,26 +542,44 @@ function getWeather(initial) {
 
 	try {
 
-		// Check to see if we can use SSE
-		if (!!window.EventSource && initial) {
-			var source = new EventSource('weather/sse');
+		// Ensure this is the first time we are running this, as we should avoid re-initializing
+		if (initial) {
+
+			// Check to see if we can use SSE
+			if (!!window.EventSource) {
+				var source = new EventSource('weather/sse');
 	
-			source.addEventListener('message', function (e) {
-				var result = JSON.parse(e.data);
-				
-				processWeather(result.weather, initial);
-				processPhoto(result.photo, initial);
-			}, false);
-	
-			source.addEventListener('open', function (e) {
-				// Connection was opened.
-			}, false);
-	
-			source.addEventListener('error', function (e) {
-				if (e.readyState == EventSource.CLOSED) {
-					// TODO: jfiorali - Configure this to show an alert on the FE
-				}
-			}, false);
+				source.addEventListener('message', function (e) {
+					var result = JSON.parse(e.data);
+					var currentTime = Date.now();
+					var serverTime = result.time;
+					var differenceTime = currentTime - serverTime;
+
+					console.log("The current time is: " + currentTime);
+					console.log("The time from the server is: " + serverTime);
+					console.log("The difference is: " + differenceTime);
+
+					// Check to see if the incoming date is within 15 seconds, if so let's process it
+					if ((Date.now() - 15) > result.time) {
+
+						processWeather(result.weather, false);
+						processPhoto(result.photo, false);
+					}
+				}, false);
+		
+				source.addEventListener('open', function (e) {
+					var result = JSON.parse(e.data);
+					
+					processWeather(result.weather, true);
+					processPhoto(result.photo, true);
+				}, false);
+		
+				source.addEventListener('error', function (e) {
+					if (e.readyState == EventSource.CLOSED) {
+						// TODO: jfiorali - Configure this to show an alert on the FE
+					}
+				}, false);
+			}
 		}
 	}
 	catch (err) {

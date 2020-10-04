@@ -77,8 +77,8 @@ class WeatherController extends BaseController {
 				exit();
 			}
 
-			// Start with nothing
-			$json_results = [];
+			// Start with the time
+			$results = ['time' => time()];
 
 			// Get the weather and photo from the database
 			$weather_result = $this->db->fetchOne("CALL getWeather()")['weather'] ?? null;
