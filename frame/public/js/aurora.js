@@ -547,7 +547,7 @@ function getWeather(initial) {
 			var source = new EventSource('weather/sse');
 	
 			source.addEventListener('message', function (e) {
-				let result = JSON.parse(e.data);
+				var result = JSON.parse(e.data);
 				
 				processWeather(result.weather, initial);
 				processPhoto(result.photo, initial);
