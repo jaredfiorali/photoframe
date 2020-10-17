@@ -80,20 +80,17 @@ function resetInterval(initial) {
 	}
 
 	// Get our initial information from the BE endpoints
-	getWeather(initial);
 	getNews(initial);
 	getReminders(initial);
 
-	//  Disabling for now, as the docker container doesn't have access to git
+	// Disabling for now, as the docker container doesn't have access to git
 	// getConfig(initial);
 
 	// Clear any timers we had for our endpoints
-	clearInterval(getW);
 	clearInterval(getN);
 	clearInterval(getR);
 
 	// Initialize our endpoint timers
-	getW = setInterval(getWeather, 60000);
 	getN = setInterval(getNews, 500000);
 	getR = setInterval(getReminders, 500000);
 }
@@ -122,19 +119,6 @@ function startTime(initial) {
 
 		// Add leading 0 in front of minutes if required
 		m = "0" + m
-	}
-
-	// If the time is greater than noon, subtract 12 in order to maintain 12 hour time
-	if (h > 12) {
-
-		// Convert to 12 hour time
-		h = h - 12
-	}
-	// In one other case, we care if the hour is 0. That's midnight
-	else if (h === 0) {
-
-		// Convert to 12 hour time
-		h = 12
 	}
 
 	// Update the clock only if the time actually changed
@@ -535,50 +519,6 @@ function processConfig(result, initial) {
 }
 
 /**
- * Retrieves the weather information from our API
- * @param  {boolean} initial - Whether or not this is the initial load of the site
- */
-function getWeather(initial) {
-
-	try {
-
-		// Ensure this is the first time we are running this, as we should avoid re-initializing
-		if (initial) {
-
-			// Check to see if we can use SSE
-			if (!!window.EventSource) {
-				var source = new EventSource('weather/sse');
-	
-				source.addEventListener('message', function (e) {
-					var result = JSON.parse(e.data);
-
-					// Check to see if the incoming date is within 15 seconds, if so let's process it
-					if (((Date.now()/1000) - result.time) < 15) {
-
-						processWeather(result.weather, false);
-						processPhoto(result.photo, false);
-					}
-				}, false);
-		
-				source.addEventListener('open', function (e) {
-				}, false);
-		
-				source.addEventListener('error', function (e) {
-					if (e.readyState == EventSource.CLOSED) {
-						// TODO: jfiorali - Configure this to show an alert on the FE
-					}
-				}, false);
-			}
-		}
-	}
-	catch (err) {
-
-		// Show the error
-		alert(err);
-	}
-}
-
-/**
  * Takes the incoming API result and assigns it to various div's for display
  * @param  {string} result - The response from our API call
  * @param  {boolean} initial - Whether or not this is the initial load of the site
@@ -879,6 +819,38 @@ function changePanel(index) {
 }
 
 /**
+ * Initializes the client's connection to our SSE endpoint, for receiving photoframe data
+ */
+function initializeSSE() {
+
+	// Check to see if we can use SSE
+	if (!!window.EventSource) {
+					
+		var source = new EventSource('weather/sse');
+		
+		source.addEventListener('message', function (e) {
+			var result = JSON.parse(e.data);
+	
+			// Check to see if the incoming date is within 15 seconds, if so let's process it
+			if (((Date.now()/1000) - result.time) < 15) {
+	
+				processWeather(result.weather, false);
+				processPhoto(result.photo, false);
+			}
+		}, false);
+	
+		source.addEventListener('open', function (e) {
+		}, false);
+	
+		source.addEventListener('error', function (e) {
+			if (e.readyState == EventSource.CLOSED) {
+				// TODO: jfiorali - Configure this to show an alert on the FE
+			}
+		}, false);
+	}
+}
+
+/**
  * The method that runs on initialization
  */
 $(document).ready(function() {
@@ -893,6 +865,9 @@ $(document).ready(function() {
 
 	// Create the elements for the weather dashboard
 	generateInitialFrame();
+
+	// Initialize the SSE connection
+	initializeSSE();
 
 	// Initialize all of the timer function
 	resetInterval(true);
