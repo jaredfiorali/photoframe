@@ -104,7 +104,7 @@ function startTime() {
 	// Get/set time variable
 	var	currentDate = new Date(),
 		currentTime = currentDate.getTime(),
-		lastUpdateTime = lastUpdate ? lastUpdate.getTime() : currentTime,
+		lastUpdateTime = lastUpdate ? lastUpdate.getTime() : currentTime - 120,
 		h = currentDate.getHours(),
 		m = (currentDate.getMinutes() < 10) ? "0" + currentDate.getMinutes() : currentDate.getMinutes(),
 		topClock = document.getElementById('topClock').innerHTML;
@@ -183,7 +183,7 @@ function setIcon(icon_text, is_day, className) {
 			icon_returned = 'wi-cloudy';
 		} else {
 			// Next, let's send daytime icons back if it's not night
-			if (is_day === true) {
+			if (is_day) {
 				if (icon_text === 'rain') {
 					icon_returned = 'wi-day-rain';
 				} else if (icon_text === 'snow') {
@@ -201,7 +201,7 @@ function setIcon(icon_text, is_day, className) {
 				}
 			}
 			// It's nighttime. Send the appropriate icon back
-			else if (is_day === false) {
+			else {
 				if (icon_text === 'rain') {
 					icon_returned = 'wi-night-rain';
 				} else if (icon_text === 'snow') {
@@ -234,15 +234,10 @@ function getShortDay(offset) {
 	var arrShortDOW = ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 		date = new Date(),
 		dow = date.getDay(),
-		shortDOW;
-
-	// Add the offset plus today's day of the week
-	shortDOW = dow + offset;
+		shortDOW = dow + offset;
 
 	// If the sum of the offset and today is more than the # of days in a week, let's loop
-	if (shortDOW > 6) {
-		shortDOW = shortDOW - 7;
-	}
+	shortDOW = (shortDOW > 6) ? shortDOW - 7 : shortDOW;
 
 	return arrShortDOW[shortDOW];
 }
@@ -265,11 +260,11 @@ function formatWeather(input, format) {
 	else {
 
 		if (format === 'number') {
-
+			
 			// Round the input, and then convert it to string
 			output = (Math.round(input * 100) / 100).toString();
 		} else if (format === 'roundNumber') {
-
+			
 			// Round the input, and then convert it to string
 			output = Math.round(input).toString();
 		} else if (format === 'icon') {
@@ -277,40 +272,40 @@ function formatWeather(input, format) {
 			// TODO: Do I need to do something?
 		} else if (format === 'time') {
 
-			// Convert to date object. *1000 in order to use milliseconds
-			var date = new Date(input * 1000),
-				meridian = " AM",
-				hours = date.getHours(),
-				minutes = "0" + date.getMinutes(),
-				seconds = "0" + date.getSeconds();
+			// // Convert to date object. *1000 in order to use milliseconds
+			// var date = new Date(input * 1000),
+			// 	meridian = " AM",
+			// 	hours = date.getHours(),
+			// 	minutes = "0" + date.getMinutes(),
+			// 	seconds = "0" + date.getSeconds();
 
-			// If the time is greater than noon, subtract 12 in order to maintain 12 hour time
-			if (hours > 12) {
+			// // If the time is greater than noon, subtract 12 in order to maintain 12 hour time
+			// if (hours > 12) {
 
-				// Convert to 12 hour time
-				hours = hours - 12;
+			// 	// Convert to 12 hour time
+			// 	hours = hours - 12;
 
-				// Update to PM
-				meridian = " PM";
-			}
-			// In one other case, we care if the hour is 0. That's midnight
-			else if (hours === 0) {
+			// 	// Update to PM
+			// 	meridian = " PM";
+			// }
+			// // In one other case, we care if the hour is 0. That's midnight
+			// else if (hours === 0) {
 
-				// Convert to 12 hour time
-				hours = 12;
-			} else if (hours === 12) {
+			// 	// Convert to 12 hour time
+			// 	hours = 12;
+			// } else if (hours === 12) {
 
-				// Update to PM
-				meridian = " PM";
-			}
+			// 	// Update to PM
+			// 	meridian = " PM";
+			// }
 
-			if (minutes === "00" && seconds === "00") {
+			// if (minutes === "00" && seconds === "00") {
 
-				output = hours + meridian;
-			} else {
+			// 	output = hours + meridian;
+			// } else {
 
-				output = hours + ':' + minutes.substr(-2) + meridian;
-			}
+			// 	output = hours + ':' + minutes.substr(-2) + meridian;
+			// }
 		} else if (format === 'percent') {
 
 			// Round the input, multiply by 100, then send back a string
