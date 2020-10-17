@@ -1,4 +1,4 @@
-FROM php:apache:latest
+FROM php:apache
 
 RUN mkdir -p /var/www/html
 RUN mkdir -p /etc/apache2/sites-enabled
