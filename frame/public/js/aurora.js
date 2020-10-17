@@ -104,7 +104,7 @@ function startTime() {
 	// Get/set time variable
 	var	currentDate = new Date(),
 		currentTime = currentDate.getTime(),
-		lastUpdateTime = lastUpdate ? lastUpdate.getTime() : currentTime - 120,
+		lastUpdateTime = lastUpdate ? lastUpdate.getTime() : currentTime,
 		h = currentDate.getHours(),
 		m = (currentDate.getMinutes() < 10) ? "0" + currentDate.getMinutes() : currentDate.getMinutes(),
 		topClock = document.getElementById('topClock').innerHTML;
@@ -116,8 +116,8 @@ function startTime() {
 		resetInterval(false);
 	}
 
-	// Update the clock only if the time actually changed
-	topClock = (currentTime > (lastUpdateTime + 60)) ? h + ':' + m : topClock;
+	// Update the clock
+	document.getElementById('topClock').innerHTML = h + ':' + m;
 
 	// Save the last update time for later
 	lastUpdate = currentDate;
