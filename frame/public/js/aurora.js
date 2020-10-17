@@ -66,7 +66,7 @@ function resetInterval(initial) {
 	if (initial) {
 
 		// Initialize the timer
-		startTime(initial);
+		startTime();
 
 		// Set our refresh timer
 		getT = setInterval(startTime, 1000, false);
@@ -98,37 +98,29 @@ function resetInterval(initial) {
 /**
  * This method manages the clock
  * It also triggers a reset if the clock is too out of sync (meaning the client device was offline)
- * @param  {boolean} initial - Whether or not this is the initial load of the site
  */
-function startTime(initial) {
+function startTime() {
 
-	// Get time
-	var	currentTime = new Date(),
-		h = currentTime.getHours(),
-		m = currentTime.getMinutes();
+	// Get/set time variable
+	var	currentDate = new Date(),
+		currentTime = currentDate.getTime(),
+		lastUpdateTime = lastUpdate ? lastUpdate.getTime() : currentTime,
+		h = currentDate.getHours(),
+		m = (currentDate.getMinutes() < 10) ? "0" + currentDate.getMinutes() : currentDate.getMinutes(),
+		topClock = document.getElementById('topClock').innerHTML;
 
 	// Check if the last time the clock updated was more than 4 minutes ago
-	if (currentTime.getTime() > lastUpdate.getTime() + 3000) {
+	if (currentTime > (lastUpdateTime + 3000)) {
 
 		// Life is just a series of reboots
 		resetInterval(false);
 	}
 
-	// If the time is less than 10, we need leading 0's
-	if (m < 10) {
-
-		// Add leading 0 in front of minutes if required
-		m = "0" + m
-	}
-
 	// Update the clock only if the time actually changed
-	if (currentTime.getTime() > (lastUpdate.getTime() + 60) || initial) {
-
-		document.getElementById('topClock').innerHTML = h + ':' + m;
-	}
+	topClock = (currentTime > (lastUpdateTime + 60)) ? h + ':' + m : topClock;
 
 	// Save the last update time for later
-	lastUpdate = currentTime;
+	lastUpdate = currentDate;
 }
 
 /**
