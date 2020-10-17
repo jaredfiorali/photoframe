@@ -5,10 +5,10 @@ RUN mkdir -p /etc/apache2/sites-enabled
 WORKDIR /var/www/html
 
 # RUN apk --no-cache add uglify-js php7 php7-pdo_mysql php7-gd apache2 php7-apache2 php7-phalcon composer
-RUN apt update && apt install -y uglify-js composer php7-phalcon
 
+RUN curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash
+RUN apt update && apt install -y node-uglify composer php7-phalcon
 RUN apt clean autoclean && apt autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
-
 RUN docker-php-ext-configure gd
 RUN docker-php-ext-configure pdo_mysql
 
