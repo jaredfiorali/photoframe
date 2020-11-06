@@ -4,7 +4,8 @@ FROM php:apache
 RUN mkdir -p /etc/apache2/sites-enabled
 
 # Install applicable packages
-RUN apt update && apt install -y node-uglify composer
+RUN apt update && apt install -y node-uglify
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | bash
 
 # Install PHP modules
