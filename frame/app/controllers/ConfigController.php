@@ -11,9 +11,7 @@ class ConfigController extends BaseController {
 	public function getAction($param = null) {
 
 		// Create a new Git object to retrieve the current commit ID
-		$git = new Git([
-			'branch' => 'master',
-		]);
+		$git = new Git();
 
 		return json_encode($git->data);
 	}

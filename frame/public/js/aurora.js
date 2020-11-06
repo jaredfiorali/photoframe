@@ -49,7 +49,7 @@ var sseTimeStamp = 0;
 		'#backgroundImage2'
 	],
 	arrPhotoLocation = [],
-	// errorConfig = '<div><a href="javascript:getConfig(false)">Manually refresh configuration</a></div>',
+	errorConfig = '<div><a href="javascript:getConfig(false)">Manually refresh configuration</a></div>',
 	errorWeather = '<div><a href="javascript:getWeather(false)">Manually refresh weather</a></div>',
 	errorPhoto = '<div><a href="javascript:getPhoto(false)">Manually refresh photo</a></div>',
 	errorNews = '<div><a href="javascript:getNews(false)">Manually refresh news</a></div>',
@@ -83,9 +83,7 @@ function resetInterval(initial) {
 	// Get our initial information from the BE endpoints
 	getNews(initial);
 	getReminders(initial);
-
-	// Disabling for now, as the docker container doesn't have access to git
-	// getConfig(initial);
+	getConfig(initial);
 
 	// Clear any timers we had for our endpoints
 	clearInterval(getN);

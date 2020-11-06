@@ -14,14 +14,11 @@ class Git extends BaseEntity {
 
 		parent::__construct($args);
 
-		// Get the desired branch from our arguments, assuming master by default
-		$branch = $args['branch'] ?? 'master';
-
 		// Start with an empty commit ID
 		$commit = [];
 
 		// Check our directory git files for the commit ID
-		if ($commit[0] = rtrim(file_get_contents(sprintf( '../.git/refs/heads/%s', $branch)))) {
+		if ($commit[0] = rtrim(file_get_contents('/var/www/html/git_revision'))) {
 
 			// Compile our array
 			$this->data = [

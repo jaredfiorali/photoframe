@@ -9,18 +9,16 @@ LABEL git_commit=$GIT_COMMIT
 RUN echo $GIT_COMMIT > ./git_revision
 
 # Create our default directories for our custom apache files
-RUN mkdir -p /var/www/html
-RUN mkdir -p /etc/apache2/sites-enabled
+RUN mkdir -p /var/www/html && mkdir -p /etc/apache2/sites-enabled
 
 # Install dependencies
 RUN apk --no-cache add uglify-js php7 php7-pdo_mysql php7-gd apache2 php7-apache2 php7-phalcon composer
 
-# Run composer to grab the remaining PHP packages
-ADD composer.json .
-RUN composer install --prefer-dist --no-scripts --no-dev && rm -rf /root/.composer
-
 # Transfer our repo files to our working direcory
 ADD . .
+
+# Run composer to grab the remaining PHP packages
+RUN composer install --prefer-dist --no-scripts --no-dev && rm -rf /root/.composer
 
 # Open up port 80 for apache traffic
 EXPOSE 80
