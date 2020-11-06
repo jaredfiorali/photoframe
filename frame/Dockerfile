@@ -1,22 +1,27 @@
 FROM php:apache
 
-RUN mkdir -p /var/www/html
+# Create a directory where we will store the site definition for apache
 RUN mkdir -p /etc/apache2/sites-enabled
-WORKDIR /var/www/html
 
-# RUN apk --no-cache add uglify-js php7 php7-pdo_mysql php7-gd apache2 php7-apache2 php7-phalcon composer
-
+# Install applicable packages
+RUN apt update && apt install -y node-uglify composer
 RUN curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | bash
-RUN apt update && apt install -y node-uglify composer php7-phalcon gnupg debian-archive-keyring apt-transport-https
-RUN apt clean autoclean && apt autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+# Install PHP modules
 RUN docker-php-ext-configure gd
 RUN docker-php-ext-configure pdo_mysql
 
+# Have composer install PHP extensions
 ADD composer.json .
 RUN composer install --prefer-dist --no-scripts --no-dev && rm -rf /root/.composer
 
+# Remove apt cache from system
+RUN apt clean autoclean && apt autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+# Add our repo files to the image
 ADD . .
 
+# Expose port 80 to the world
 EXPOSE 80
 
 # By default, simply start apache.
