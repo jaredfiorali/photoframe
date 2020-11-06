@@ -17,8 +17,8 @@ build_and_push_image:
   image: docker:latest
   script:
     - cd frame
-    - docker build --network host -t registry.registry/photoframe:latest .
-    - docker push registry.registry/photoframe
+    - docker build --network host -t registry.fiora.li/photoframe:latest .
+    - docker push registry.fiora.li/photoframe
 
 deploy_to_production:
   stage: deploy_to_production
