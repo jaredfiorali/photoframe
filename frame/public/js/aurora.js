@@ -820,8 +820,8 @@ function initializeSSE() {
 		// Create a new Event Listener for incoming messages
 		source.addEventListener('message', function (e) {
 
-			// Only run the update if the last received message occurred more than 500ms ago
-			if (((e.timeStamp - sseTimeStamp) > 500) || sseTimeStamp === 0) {
+			// Only run the update if the last received message occurred more than 2s ago
+			if (((e.timeStamp - sseTimeStamp) > 2000) || sseTimeStamp === 0) {
 
 				// Parse our JSON
 				var result = JSON.parse(e.data);
