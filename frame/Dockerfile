@@ -4,7 +4,7 @@ FROM php:apache
 RUN mkdir -p /etc/apache2/sites-enabled
 
 # Install applicable packages
-RUN apt update && apt install -y node-uglify zlib1g-dev libpng-dev
+RUN apt-get update && apt-get install -y node-uglify zlib1g-dev libpng-dev
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | bash
 
@@ -17,7 +17,7 @@ ADD composer.json .
 RUN composer install --prefer-dist --no-scripts --no-dev && rm -rf /root/.composer
 
 # Remove apt cache from system
-RUN apt clean autoclean && apt autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
+RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # Add our repo files to the image
 ADD . .
@@ -29,4 +29,3 @@ EXPOSE 80
 RUN ["mv", "-f", "/var/www/html/photoframe.conf", "/etc/apache2/sites-enabled"]
 RUN ["mv", "-f", "/var/www/html/httpd.conf", "/etc/apache2/httpd.conf"]
 RUN ["chmod", "-R", "777", "."]
-CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
