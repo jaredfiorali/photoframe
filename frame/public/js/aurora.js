@@ -1,4 +1,5 @@
-var weatherJSON = "",
+var sseTimeStamp = 0;
+	weatherJSON = "",
 	newsJSON = "",
 	remindersJSON = "",
 	getW = 0,
@@ -272,40 +273,40 @@ function formatWeather(input, format) {
 			// TODO: Do I need to do something?
 		} else if (format === 'time') {
 
-			// // Convert to date object. *1000 in order to use milliseconds
-			// var date = new Date(input * 1000),
-			// 	meridian = " AM",
-			// 	hours = date.getHours(),
-			// 	minutes = "0" + date.getMinutes(),
-			// 	seconds = "0" + date.getSeconds();
+			// Convert to date object. *1000 in order to use milliseconds
+			var date = new Date(input * 1000),
+				meridian = " AM",
+				hours = date.getHours(),
+				minutes = "0" + date.getMinutes(),
+				seconds = "0" + date.getSeconds();
 
-			// // If the time is greater than noon, subtract 12 in order to maintain 12 hour time
-			// if (hours > 12) {
+			// If the time is greater than noon, subtract 12 in order to maintain 12 hour time
+			if (hours > 12) {
 
-			// 	// Convert to 12 hour time
-			// 	hours = hours - 12;
+				// Convert to 12 hour time
+				hours = hours - 12;
 
-			// 	// Update to PM
-			// 	meridian = " PM";
-			// }
-			// // In one other case, we care if the hour is 0. That's midnight
-			// else if (hours === 0) {
+				// Update to PM
+				meridian = " PM";
+			}
+			// In one other case, we care if the hour is 0. That's midnight
+			else if (hours === 0) {
 
-			// 	// Convert to 12 hour time
-			// 	hours = 12;
-			// } else if (hours === 12) {
+				// Convert to 12 hour time
+				hours = 12;
+			} else if (hours === 12) {
 
-			// 	// Update to PM
-			// 	meridian = " PM";
-			// }
+				// Update to PM
+				meridian = " PM";
+			}
 
-			// if (minutes === "00" && seconds === "00") {
+			if (minutes === "00" && seconds === "00") {
 
-			// 	output = hours + meridian;
-			// } else {
+				output = hours + meridian;
+			} else {
 
-			// 	output = hours + ':' + minutes.substr(-2) + meridian;
-			// }
+				output = hours + ':' + minutes.substr(-2) + meridian;
+			}
 		} else if (format === 'percent') {
 
 			// Round the input, multiply by 100, then send back a string
@@ -812,23 +813,33 @@ function initializeSSE() {
 
 	// Check to see if we can use SSE
 	if (!!window.EventSource) {
-					
+
+		// Construct a new SSE EventSource
 		var source = new EventSource('weather/sse');
 		
+		// Create a new Event Listener for incoming messages
 		source.addEventListener('message', function (e) {
-			var result = JSON.parse(e.data);
-	
-			// Check to see if the incoming date is within 15 seconds, if so let's process it
-			if (((Date.now()/1000) - result.time) < 15) {
-	
+
+			// Only run the update if the last received message occurred more than 500ms ago
+			if (((e.timeStamp - sseTimeStamp) > 500) || sseTimeStamp === 0) {
+
+				// Parse our JSON
+				var result = JSON.parse(e.data);
+				
+				// Process our SEE data
 				processWeather(result.weather, false);
 				processPhoto(result.photo, false);
 			}
+
+			// Save the current timestamp
+			sseTimeStamp = e.timeStamp;
 		}, false);
 	
+		// Create a new Event Listener for opening our SSE connection
 		source.addEventListener('open', function (e) {
 		}, false);
 	
+		// Create a new Event Listener for failed events
 		source.addEventListener('error', function (e) {
 			if (e.readyState == EventSource.CLOSED) {
 				// TODO: jfiorali - Configure this to show an alert on the FE
