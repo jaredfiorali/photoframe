@@ -16,7 +16,6 @@ build_and_push_image:
   stage: build_and_push_image
   image: docker:latest
   script:
-    - echo $CI_COMMIT_SHORT_SHA
     - cd frame
     - docker build --network host --build-arg GIT_COMMIT=$CI_COMMIT_SHORT_SHA -t registry.fiora.li/photoframe:latest .
     - docker push registry.fiora.li/photoframe
