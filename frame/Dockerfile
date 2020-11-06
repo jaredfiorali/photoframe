@@ -11,6 +11,8 @@ RUN composer install --prefer-dist --no-scripts --no-dev && rm -rf /root/.compos
 
 ADD . .
 
+RUN echo $GIT_COMMIT > ./git_revision
+
 EXPOSE 80
 
 # By default, simply start apache.
