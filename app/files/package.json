@@ -1,0 +1,15 @@
+{
+	"title": "Material demo",
+	"devDependencies": {
+		"react-scripts": "latest"
+	},
+	"description": "https://github.com/mui-org/material-ui/blob/master/docs/src/pages/components/transitions/SimpleFade.js",
+	"dependencies": {
+		"@material-ui/core": "4.7.1",
+		"react": "16.12.0",
+		"react-dom": "16.12.0"
+	},
+	"scripts": {
+		"start": "react-scripts start"
+	}
+}
