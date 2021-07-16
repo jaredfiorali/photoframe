@@ -9,7 +9,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
 ADD files/package.json ./
-RUN npm install --silent
+RUN npm install --silent && npm install @material-ui/core@next --silent && npm install @material-ui/icons@next --silent
 
 # add app
 COPY files ./
