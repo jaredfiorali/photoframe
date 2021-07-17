@@ -1,3 +1,7 @@
 # Photo Frame
 
-A small React/Golang project to display favorite photos and weather information
+A small React/Rust project to display favorite photos and weather information
+
+## External Resources
+
+- Weather icons by <https://basmilius.github.io/weather-icons/index-line.html>

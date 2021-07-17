@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { styled } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import { useTheme, createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import BigClock from './components/bigClock';
 
@@ -41,8 +41,13 @@ function App() {
 			}}>
 				<GridContainer>
 					<GridTop></GridTop>
-					<GridBottom>
-						<BigClock></BigClock>
+					<GridBottom container>
+						<Grid item xs={10}>
+							<BigClock></BigClock>
+						</Grid>
+						<Grid item xs={1}>
+							<img src="icons/weather/overcast-day.svg" style={{width: '150px'}} />
+						</Grid>
 					</GridBottom>
 				</GridContainer>
 			</Box>
