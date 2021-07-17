@@ -2,18 +2,20 @@
 
 # Check to see if we are planning on building a new image
 if [ ! -z "$1" ]; then
-	echo "Building Docker image"
+	echo "Building Docker image for app server"
 
 	# Build Docker image
 	docker build app -t react-dev
 else
-	echo "Skipping Docker image build"
+	echo "Skipping Docker image build for app server"
 fi
 
 # Run Docker image
 docker run \
 --rm \
 -p 3000:3000 \
+--name react-dev \
 --mount type=bind,source=`pwd`/app/files/src,target=/app/src \
 --mount type=bind,source=`pwd`/app/files/public,target=/app/public \
+-d \
 react-dev:latest
