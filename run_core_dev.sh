@@ -5,7 +5,7 @@ if [ ! -z "$1" ]; then
 	echo "Building Docker image"
 
 	# Build Docker image
-	docker build app -t react-dev
+	docker build core -t rust-dev
 else
 	echo "Skipping Docker image build"
 fi
@@ -13,7 +13,5 @@ fi
 # Run Docker image
 docker run \
 --rm \
--p 3000:3000 \
---mount type=bind,source=`pwd`/app/files/src,target=/app/src \
---mount type=bind,source=`pwd`/app/files/public,target=/app/public \
-react-dev:latest
+-p 7878:7878 \
+rust-dev:latest

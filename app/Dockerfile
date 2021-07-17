@@ -1,18 +1,18 @@
-# pull official base image
+# Pull official base image
 FROM node:current-alpine
 
-# set working directory
+# Set working directory
 WORKDIR /app
 
-# add `/app/node_modules/.bin` to $PATH
+# Add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
 
-# install app dependencies
+# Install app dependencies
 ADD files/package.json ./
 RUN npm install --silent && npm install @material-ui/core@next --silent && npm install @material-ui/icons@next --silent
 
-# add app
+# Add app
 COPY files ./
 
-# start app
+# Start app
 CMD ["npm", "start"]
