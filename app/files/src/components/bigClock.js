@@ -1,5 +1,5 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import { Slide, Typography } from '@material-ui/core';
 
 function constructTime() {
 	let date = new Date();
@@ -19,7 +19,8 @@ class BigClock extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			time: constructTime()
+			time: constructTime(),
+			slideIn: false
 		};
 	}
 
@@ -28,6 +29,8 @@ class BigClock extends React.Component {
 			() => this.tick(),
 			1000
 		);
+
+		this.state.slideIn = true;
 	}
 
 	componentWillUnmount() {
@@ -42,9 +45,11 @@ class BigClock extends React.Component {
 
 	render() {
 		return (
-			<Typography variant="h1">
-				{this.state.time}
-			</Typography>
+			<Slide direction="right" in={this.state.slideIn} mountOnEnter unmountOnExit>
+				<Typography variant="h1">
+					{this.state.time}
+				</Typography>
+			</Slide>
 		);
 	}
 }

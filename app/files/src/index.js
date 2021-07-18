@@ -1,10 +1,8 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-import { styled } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { styled, createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Box, Grid, Slide } from '@material-ui/core';
 
 import BigClock from './components/bigClock';
 
@@ -19,20 +17,26 @@ const darkTheme = createTheme({
 	},
 });
 
-const GridContainer = styled(Grid)(({ darkTheme }) => ({
+const GridContainer = styled(Grid)(({}) => ({
 	height: '100%'
 }));
 
-const GridTop = styled(Grid)(({ darkTheme }) => ({
+const GridTop = styled(Grid)(({}) => ({
 	height: '85%'
 }));
 
-const GridBottom = styled(Grid)(({ darkTheme }) => ({
+const GridBottom = styled(Grid)(({}) => ({
 	height: '10%',
 	marginLeft: '10px'
 }));
 
 function App() {
+	const [slideIn, setSlideIn] = useState(false);
+
+	useEffect(() => {
+		setSlideIn(true);
+	});
+
 	return (
 		<ThemeProvider theme={darkTheme}>
 			<Box sx={{
@@ -46,7 +50,9 @@ function App() {
 							<BigClock></BigClock>
 						</Grid>
 						<Grid item xs={1}>
-							<img src="icons/weather/overcast-day.svg" style={{width: '150px'}} />
+							<Slide direction="left" in={slideIn} mountOnEnter unmountOnExit>
+								<img src="icons/weather/overcast-day.svg" style={{width: '150px'}} />
+							</Slide>
 						</Grid>
 					</GridBottom>
 				</GridContainer>
