@@ -10,6 +10,12 @@ else
 	echo "Skipping Docker image build for core server"
 fi
 
+# Confirm if we were able to build the docker image successfully
+if [ $? -ne 0 ]; then
+	echo "Failed to build docker image!"
+	exit 1;
+fi
+
 # Run Docker image
 docker run \
 --rm \
