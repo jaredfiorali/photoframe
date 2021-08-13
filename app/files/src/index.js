@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { styled, createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
-import { Box, Grid, Slide, Container } from '@material-ui/core';
+import { Typography, Box, Grid, Slide, Container } from '@material-ui/core';
 
 import BigClock from './components/bigClock';
 
@@ -22,6 +22,10 @@ const useStyles = makeStyles ({
 	weatherIcon: {
 		width: '150px',
 		marginTop: '-20px',
+	},
+	bigTemperature: {
+		opacity: 1,
+		transition: 'all 1s',
 	}
 });
 
@@ -30,7 +34,8 @@ const OverlayContainer = styled(Container)(({ }) => ({
 	height: '100%',
 	position: 'absolute',
 	backgroundColor: 'black',
-	opacity: 0.5,
+	opacity: 0,
+	transition: 'all 1s',
 }));
 
 const GridContainer = styled(Grid)(({}) => ({
@@ -43,9 +48,20 @@ const GridTop = styled(Grid)(({}) => ({
 }));
 
 const GridBottom = styled(Grid)(({}) => ({
-	height: '15%',
+	height: '30%',
 	overflow: 'hidden',
-	marginLeft: '10px'
+	marginLeft: '10px',
+	transition: 'all 1s',
+}));
+
+const GridClock = styled(Grid)(({}) => ({
+	transformOrigin: 'top left',
+	transition: 'all 1s',
+}));
+
+const GridWeatherIcon = styled(Grid)(({ }) => ({
+	transformOrigin: 'top left',
+	transition: 'all 1s',
 }));
 
 function App() {
@@ -72,19 +88,26 @@ function App() {
 				flexGrow: 1,
 				color: 'text.primary',
 			}}>
-				<OverlayContainer style={{display: displayOverlay ? 'block' : 'none'}}/>
-				<Container onClick={toggleOverlay}>
+				<OverlayContainer onClick={toggleOverlay} style={{ opacity: displayOverlay ? '0.5' : '0'}}/>
+				<Container>
 					<GridContainer>
 						<GridTop/>
-						<GridBottom container>
-							<Grid item xs={10}>
-								<BigClock></BigClock>
-							</Grid>
-							<Grid item xs={1}>
-								<Slide direction="left" in={slideIn}>
-									<img src="icons/weather/overcast-day.svg" className={classes.weatherIcon} />
-								</Slide>
-							</Grid>
+						<GridBottom container style={{ transform: displayOverlay ? 'translateY(-275%)' : 'translateY(0%)' }}>
+							<GridClock style={{ transform: displayOverlay ? 'scale(1.2)' : 'scale(1)' }} item xs={8}>
+								<BigClock/>
+							</GridClock>
+							<GridWeatherIcon style={{ transform: displayOverlay ? 'scale(2)' : 'scale(1)' }} container xs={2}>
+								<Grid item xs={11}>
+									<Slide direction="left" in={slideIn}>
+										<img src="icons/weather/overcast-day.svg" className={classes.weatherIcon} />
+									</Slide>
+								</Grid>
+								<Grid item style={{ transition: 'all 0.1s', paddingTop: '30px', opacity: displayOverlay ? '0' : '1' }} xs={1}>
+									<Slide direction="left" in={slideIn}>
+										<Typography variant="h2">23°C</Typography>
+									</Slide>
+								</Grid>
+							</GridWeatherIcon>
 						</GridBottom>
 					</GridContainer>
 				</Container>
