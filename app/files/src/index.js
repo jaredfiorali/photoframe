@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 import { styled, createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Box, Grid, Slide, Container } from '@material-ui/core';
 
 import BigClock from './components/bigClock';
@@ -17,13 +18,19 @@ const darkTheme = createTheme({
 	},
 });
 
+const useStyles = makeStyles ({
+	weatherIcon: {
+		width: '150px',
+		marginTop: '-20px',
+	}
+});
+
 const OverlayContainer = styled(Container)(({ }) => ({
 	zIndex: '1',
 	height: '100%',
 	position: 'absolute',
 	backgroundColor: 'black',
 	opacity: 0.5,
-	display: 'none',
 }));
 
 const GridContainer = styled(Grid)(({}) => ({
@@ -32,21 +39,32 @@ const GridContainer = styled(Grid)(({}) => ({
 }));
 
 const GridTop = styled(Grid)(({}) => ({
-	height: '80%'
+	height: '85%'
 }));
 
 const GridBottom = styled(Grid)(({}) => ({
-	height: '10%',
-	marginTop: '40px',
+	height: '15%',
+	overflow: 'hidden',
 	marginLeft: '10px'
 }));
 
 function App() {
+	const classes = useStyles();
+
 	const [slideIn, setSlideIn] = useState(false);
+	const [displayOverlay, setDisplayOverlay] = useState(false);
 
 	useEffect(() => {
 		setSlideIn(true);
 	});
+
+	function toggleOverlay() {
+		if (displayOverlay) {
+			setDisplayOverlay(false);
+		} else {
+			setDisplayOverlay(true);
+		}
+	}
 
 	return (
 		<ThemeProvider theme={darkTheme}>
@@ -54,17 +72,17 @@ function App() {
 				flexGrow: 1,
 				color: 'text.primary',
 			}}>
-				<OverlayContainer/>
-				<Container>
+				<OverlayContainer style={{display: displayOverlay ? 'block' : 'none'}}/>
+				<Container onClick={toggleOverlay}>
 					<GridContainer>
-						<GridTop></GridTop>
+						<GridTop/>
 						<GridBottom container>
 							<Grid item xs={10}>
 								<BigClock></BigClock>
 							</Grid>
 							<Grid item xs={1}>
-								<Slide direction="left" in={slideIn} mountOnEnter unmountOnExit>
-									<img src="icons/weather/overcast-day.svg" style={{width: '150px'}} />
+								<Slide direction="left" in={slideIn}>
+									<img src="icons/weather/overcast-day.svg" className={classes.weatherIcon} />
 								</Slide>
 							</Grid>
 						</GridBottom>
