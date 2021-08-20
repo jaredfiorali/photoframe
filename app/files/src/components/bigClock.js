@@ -45,11 +45,13 @@ class BigClock extends React.Component {
 
 	render() {
 		return (
-			<Slide direction="right" in={this.state.slideIn} mountOnEnter unmountOnExit>
-				<Typography variant="h1">
-					{this.state.time}
-				</Typography>
-			</Slide>
+			<div style={{textAlign: 'center'}}>
+				<Slide direction="right" in={this.state.slideIn} mountOnEnter unmountOnExit>
+					<Typography variant="h1">
+						{this.state.time}
+					</Typography>
+				</Slide>
+			</div>
 		);
 	}
 }

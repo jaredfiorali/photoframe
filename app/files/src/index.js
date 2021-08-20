@@ -44,7 +44,7 @@ const GridContainer = styled(Grid)(({}) => ({
 }));
 
 const GridTop = styled(Grid)(({}) => ({
-	height: '85%'
+	height: '75%'
 }));
 
 const GridBottom = styled(Grid)(({}) => ({
@@ -92,17 +92,19 @@ function App() {
 				<Container>
 					<GridContainer>
 						<GridTop/>
-						<GridBottom container style={{ transform: displayOverlay ? 'translateY(-275%)' : 'translateY(0%)' }}>
-							<GridClock style={{ transform: displayOverlay ? 'scale(1.2)' : 'scale(1)' }} item xs={8}>
-								<BigClock/>
+						<GridBottom container style={{ transform: displayOverlay ? 'translateY(-250%)' : 'translateY(0%)' }}>
+							<GridClock style={{ transform: displayOverlay ? 'scale(1.2)' : 'scale(1)' }} item xs={3}>
+								<Typography variant="h5" style={{ textAlign: 'center', transition: 'all 1s', paddingTop: '30px', opacity: displayOverlay ? '1' : '0' }}>Friday, August 13th</Typography>
+								<BigClock style={{ textAlign: 'center' }}/>
 							</GridClock>
-							<GridWeatherIcon style={{ transform: displayOverlay ? 'scale(2)' : 'scale(1)' }} container xs={2}>
+							<Grid item xs={5}/>
+							<GridWeatherIcon style={{ paddingTop: displayOverlay ? '0px' : '60px', transform: displayOverlay ? 'scale(2)' : 'scale(1)' }} container xs={2}>
 								<Grid item xs={11}>
 									<Slide direction="left" in={slideIn}>
 										<img src="icons/weather/overcast-day.svg" className={classes.weatherIcon} />
 									</Slide>
 								</Grid>
-								<Grid item style={{ transition: 'all 0.1s', paddingTop: '30px', opacity: displayOverlay ? '0' : '1' }} xs={1}>
+								<Grid item style={{ transition: 'all 1s', paddingTop: '30px', opacity: displayOverlay ? '0' : '1' }} xs={1}>
 									<Slide direction="left" in={slideIn}>
 										<Typography variant="h2">23°C</Typography>
 									</Slide>
