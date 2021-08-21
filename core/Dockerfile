@@ -1,15 +1,10 @@
-# Pull official base image
-FROM rust:latest
+FROM alpine:latest
 
-# Get Rust to print stack traces if there is an error
-ENV RUST_BACKTRACE=1
+RUN mkdir -p /var/www/html
+WORKDIR /var/www/html
 
-# Set working directory and copy app files
-WORKDIR /usr/src/myapp
-COPY files .
+RUN apk --no-cache add php7 php7-json php7-openssl php7-simplexml
 
-# Compile application
-RUN cargo install --path .
+ADD . .
 
-# Run app
-CMD ["target/release/photoframe_api"]
+CMD ["php", "pull.php"]

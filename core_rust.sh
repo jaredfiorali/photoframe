@@ -5,7 +5,7 @@ if [ ! -z "$1" ]; then
 	echo "Building Docker image for core server"
 
 	# Build Docker image
-	docker build core -t php-dev
+	docker build core -t rust-dev
 else
 	echo "Skipping Docker image build for core server"
 fi
@@ -20,5 +20,6 @@ fi
 docker run \
 --rm \
 -p 8080:8080 \
---name php-dev \
-php-dev:latest
+--name rust-dev \
+-d \
+rust-dev:latest
