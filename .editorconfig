@@ -27,3 +27,9 @@ indent_size = 2
 [*.rs]
 indent_style = space
 indent_size = 4
+
+# Matches multiple files with brace expansion notation
+# Set default charset
+[*.php]
+indent_style = tabs
+indent_size = 4

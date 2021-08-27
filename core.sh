@@ -19,6 +19,6 @@ fi
 # Run Docker image
 docker run \
 --rm \
--p 8080:8080 \
+-p 8080:80 \
 --name php-dev \
 php-dev:latest
