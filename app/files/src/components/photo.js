@@ -1,6 +1,6 @@
 import React from 'react';
-import { styled } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Container } from '@mui/material';
 
 const PhotoContainer = styled(Container)(({ }) => ({
 	background: 'url(img/background.jpg)',

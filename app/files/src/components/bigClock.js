@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slide, Typography } from '@material-ui/core';
+import { Slide, Typography } from '@mui/material';
 
 function constructTime() {
 	let date = new Date();

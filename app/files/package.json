@@ -5,14 +5,15 @@
 		"react-scripts": "*"
 	},
 	"dependencies": {
-		"@emotion/react": "*",
-		"@emotion/styled": "*",
-		"@fontsource/roboto": "*",
 		"@bybas/weather-icons": "*",
-		"react": "*",
-		"react-dom": "*"
+		"@fontsource/roboto": "*",
+
+		"@mui/material": "*",
+		"@emotion/react": "*",
+		"@emotion/styled": "*"
 	},
 	"scripts": {
-		"start": "react-scripts start"
+		"start": "react-scripts start",
+		"build": "react-scripts build"
 	}
 }

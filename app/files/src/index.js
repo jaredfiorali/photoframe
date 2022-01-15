@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-import { styled, createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Typography, Box, Grid, Slide, Container } from '@material-ui/core';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { Typography, Box, Grid, Slide, Container } from '@mui/material';
 
 import BigClock from './components/bigClock';
 import Photo from './components/photo';
