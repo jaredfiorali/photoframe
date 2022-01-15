@@ -29,13 +29,19 @@ const useStyles = makeStyles ({
 	}
 });
 
-const OverlayContainer = styled(Container)(({ }) => ({
-	zIndex: '1',
+const Photo = styled(Container)(({ }) => ({
+	background: 'url(img/background.jpg)',
+	backgroundSize: 'cover',
+	backgroundColor: 'black',
 	height: '100%',
 	position: 'absolute',
-	backgroundColor: 'black',
-	opacity: 0,
 	transition: 'all 1s',
+}));
+
+const OverlayContainer = styled(Container)(({ }) => ({
+	backgroundColor: 'black',
+	transition: 'all 1s',
+	padding: '0 !important',
 }));
 
 const GridContainer = styled(Grid)(({}) => ({
@@ -88,8 +94,8 @@ function App() {
 				flexGrow: 1,
 				color: 'text.primary',
 			}}>
-				<OverlayContainer onClick={toggleOverlay} style={{ opacity: displayOverlay ? '0.5' : '0'}}/>
-				<Container>
+				<OverlayContainer onClick={toggleOverlay}>
+					<Photo style={{ opacity: displayOverlay ? '0.5' : '1' }} />
 					<GridContainer>
 						<GridTop/>
 						<GridBottom container style={{ transform: displayOverlay ? 'translateY(-250%)' : 'translateY(0%)' }}>
@@ -112,7 +118,7 @@ function App() {
 							</GridWeatherIcon>
 						</GridBottom>
 					</GridContainer>
-				</Container>
+				</OverlayContainer>
 			</Box>
 		</ThemeProvider>
 	);
