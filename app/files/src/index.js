@@ -6,6 +6,7 @@ import { Typography, Box, Grid, Slide, Container } from '@mui/material';
 
 import BigClock from './components/bigClock';
 import Photo from './components/photo';
+import Spacer from './components/spacer';
 import WeatherIcon from './components/weatherIcon';
 
 import '@fontsource/roboto/300.css';
@@ -37,12 +38,7 @@ const GridTop = styled(Grid)(({}) => ({
 const GridBottom = styled(Grid)(({}) => ({
 	height: '30%',
 	overflow: 'hidden',
-	marginLeft: '10px',
-	transition: 'all 1s',
-}));
-
-const GridClock = styled(Grid)(({}) => ({
-	transformOrigin: 'top left',
+	marginLeft: '1%',
 	transition: 'all 1s',
 }));
 
@@ -76,20 +72,19 @@ function App() {
 				<OverlayContainer onClick={toggleOverlay}>
 					<Photo displayOverlayEnabled={displayOverlay} />
 					<GridContainer>
-						<GridTop/>
+						<GridTop />
 						<GridBottom container style={{ transform: displayOverlay ? 'translateY(-250%)' : 'translateY(0%)' }}>
-							<GridClock style={{ transform: displayOverlay ? 'scale(1.2)' : 'scale(1)' }} item xs={3}>
-								<Typography variant="h5" style={{ textAlign: 'center', transition: 'all 1s', paddingTop: '30px', opacity: displayOverlay ? '1' : '0' }}>Friday, August 13th</Typography>
-								<BigClock style={{ textAlign: 'center' }}/>
-							</GridClock>
-							<Grid item xs={5}/>
+							<BigClock displayOverlayEnabled={displayOverlay} />
+
+							<Spacer space={5} />
+
 							<GridWeatherIcon style={{ paddingTop: displayOverlay ? '0px' : '60px', transform: displayOverlay ? 'scale(2)' : 'scale(1)' }} container item xs={2}>
 								<Slide direction="left" in={slideIn}>
 									<Grid item xs={11}>
 										<WeatherIcon />
 									</Grid>
 								</Slide>
-								<Grid item style={{ transition: 'all 1s', paddingTop: '30px', opacity: displayOverlay ? '0' : '1' }} xs={1}>
+								<Grid item style={{ transition: 'all 1s', paddingTop: '10%', opacity: displayOverlay ? '0' : '1' }} xs={1}>
 									<Slide direction="left" in={slideIn}>
 										<Typography variant="h2">23°C</Typography>
 									</Slide>

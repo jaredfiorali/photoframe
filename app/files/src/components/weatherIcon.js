@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 
 const WeatherIconContainer = styled('img')({
 	width: '150px',
-	marginTop: '-20px',
+	marginTop: '-12%',
 });
 
 class WeatherIcon extends React.Component {
