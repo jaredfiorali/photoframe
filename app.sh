@@ -5,7 +5,7 @@ if [ ! -z "$1" ]; then
 	echo "Building Docker image for app server"
 
 	# Build Docker image
-	# docker build app -t react-dev
+	docker build app -t react-dev
 else
 	echo "Skipping Docker image build for app server"
 fi
@@ -15,6 +15,9 @@ if [ $? -ne 0 ]; then
 	echo "Failed to build docker image!"
 	exit 1;
 fi
+
+# Stop any running instances of this container
+docker stop react-dev
 
 # Run Docker image
 docker run \

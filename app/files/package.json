@@ -1,9 +1,9 @@
 {
-	"title": "Material demo",
+	"title": "PhotoFrame",
+	"description": "A simple photo frame with weather details",
 	"devDependencies": {
-		"react-scripts": "latest"
+		"react-scripts": "*"
 	},
-	"description": "https://github.com/mui-org/material-ui/blob/master/docs/src/pages/components/transitions/SimpleFade.js",
 	"dependencies": {
 		"@emotion/react": "*",
 		"@emotion/styled": "*",

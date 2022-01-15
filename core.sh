@@ -16,6 +16,9 @@ if [ $? -ne 0 ]; then
 	exit 1;
 fi
 
+# Stop any running instances of this container
+docker stop php-dev
+
 # Run Docker image
 docker run \
 --rm \
