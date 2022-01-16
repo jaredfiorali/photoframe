@@ -13,6 +13,10 @@
 		"@emotion/styled": "*"
 	},
 	"scripts": {
-		"start": "react-scripts start"
+		"start": "react-scripts start",
+		"build": "react-scripts build"
+	},
+	"resolutions": {
+		"mini-css-extract-plugin": "2.4.5"
 	}
 }
