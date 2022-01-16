@@ -49,52 +49,66 @@ const GridWeatherIcon = styled(Grid)(({ }) => ({
 
 function App() {
 	const [slideIn, setSlideIn] = useState(false);
+	const [weatherData, setWeatherData] = useState("");
 	const [displayOverlay, setDisplayOverlay] = useState(false);
 
 	useEffect(() => {
 		setSlideIn(true);
+
+		if (weatherData == "") {
+			setWeatherData("fetching...");
+			fetch('http://localhost:8080/index.php?endpoint=getWeather')
+				.then(res => res.json())
+				.then((data) => {
+					setWeatherData(data);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+		}
 	});
 
 	function toggleOverlay() {
-		if (displayOverlay) {
-			setDisplayOverlay(false);
-		} else {
-			setDisplayOverlay(true);
-		}
+		displayOverlay ? setDisplayOverlay(false) : setDisplayOverlay(true);
 	}
 
 	return (
-		<ThemeProvider theme={darkTheme}>
-			<Box sx={{
-				flexGrow: 1,
-				color: 'text.primary',
-			}}>
-				<OverlayContainer onClick={toggleOverlay}>
-					<Photo displayOverlayEnabled={displayOverlay} />
-					<GridContainer>
-						<GridTop />
-						<GridBottom container style={{ transform: displayOverlay ? 'translateY(-250%)' : 'translateY(0%)' }}>
-							<BigClock displayOverlayEnabled={displayOverlay} />
+		<div>
+		{
+			weatherData !== "" && weatherData !== "fetching..." &&
+			<ThemeProvider theme={darkTheme}>
+				<Box sx={{
+					flexGrow: 1,
+					color: 'text.primary',
+				}}>
+					<OverlayContainer onClick={toggleOverlay}>
+						<Photo displayOverlayEnabled={displayOverlay} />
+						<GridContainer>
+							<GridTop />
+							<GridBottom container style={{ transform: displayOverlay ? 'translateY(-250%)' : 'translateY(0%)' }}>
+								<BigClock displayOverlayEnabled={displayOverlay} />
 
-							<Spacer space={5} />
+								<Spacer space={5} />
 
-							<GridWeatherIcon style={{ paddingTop: displayOverlay ? '0px' : '60px', transform: displayOverlay ? 'scale(2)' : 'scale(1)' }} container item xs={2}>
-								<Slide direction="left" in={slideIn}>
-									<Grid item xs={11}>
-										<WeatherIcon />
-									</Grid>
-								</Slide>
-								<Grid item style={{ transition: 'all 1s', paddingTop: '10%', opacity: displayOverlay ? '0' : '1' }} xs={1}>
+								<GridWeatherIcon style={{ paddingTop: displayOverlay ? '0px' : '60px', transform: displayOverlay ? 'scale(2)' : 'scale(1)' }} container item xs={2}>
 									<Slide direction="left" in={slideIn}>
-										<Typography variant="h2">23°C</Typography>
+										<Grid item xs={11}>
+											<WeatherIcon iconCode={weatherData.current.iconCode} />
+										</Grid>
 									</Slide>
-								</Grid>
-							</GridWeatherIcon>
-						</GridBottom>
-					</GridContainer>
-				</OverlayContainer>
-			</Box>
-		</ThemeProvider>
+									<Grid item style={{ transition: 'all 1s', paddingTop: '10%', opacity: displayOverlay ? '0' : '1' }} xs={1}>
+										<Slide direction="left" in={slideIn}>
+											<Typography variant="h2">{weatherData.current.temperature}°C</Typography>
+										</Slide>
+									</Grid>
+								</GridWeatherIcon>
+							</GridBottom>
+						</GridContainer>
+					</OverlayContainer>
+				</Box>
+			</ThemeProvider>
+		}
+		</div>
 	);
 }
 

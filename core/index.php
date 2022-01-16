@@ -1,5 +1,7 @@
 <?php
 
+header('Access-Control-Allow-Origin: *');
+
 include_once 'weather.php';
 
 define('CURRENT_WEATHER_FILE', 'current.json');
