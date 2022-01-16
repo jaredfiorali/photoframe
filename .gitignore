@@ -1,9 +1,7 @@
-images/
-includes/config/config.php
+core/current.json
+core/forecast.json
+
+
 .vscode
-/.idea/
 /vendor/
 ._.DS_Store
-/public/wget
-/public/js/*.min.js
-/vendor

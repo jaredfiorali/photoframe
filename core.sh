@@ -24,5 +24,6 @@ docker run \
 --rm \
 -p 8080:80 \
 --name php-dev \
+--mount type=bind,source=`pwd`/core,target=/var/www/html \
 -d \
 php-dev:latest
