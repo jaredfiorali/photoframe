@@ -55,7 +55,9 @@ function updateWeather()
     // Parse the weather forecast and save it in a local file
     $weatherForecast = [];
     foreach ($weatherParsed->forecastGroup->forecast as $forecast) {
-        $weatherForecast[] = new ForecastWeather($forecast);
+        if (stripos($forecast->period, 'night') === false) {
+            $weatherForecast[] = new ForecastWeather($forecast);
+        }
     }
     file_put_contents(FORECAST_WEATHER_FILE, json_encode($weatherForecast));
 

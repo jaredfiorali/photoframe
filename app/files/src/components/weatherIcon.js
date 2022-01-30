@@ -11,12 +11,12 @@ const weatherIconText = [
 	'Sunny',
 	'Mainly Sunny',
 	'A mix of sun and cloud',
+	'Mostly Cloudy',
 	'',
 	'',
 	'',
 	'',
-	'',
-	'',
+	'Chance of flurries',
 	'',
 	'Cloudy',
 	'',
@@ -24,9 +24,9 @@ const weatherIconText = [
 	'',
 	'',
 	'Periods of rain or snow',
-	'',
+	'Light snow',
 	'Snow',
-	'Snow at times heavy',
+	'Heavy snow',
 	'',
 	'',
 	'',
@@ -47,6 +47,8 @@ const weatherIconText = [
 	'',
 	'',
 	'Chance of flurries',
+	'',
+	'Snow and blowing snow',
 ];
 
 // This array maps the Environment Canada icon filenames with our internal filenames
@@ -54,7 +56,7 @@ const weatherIcon = [
 	'clear-day',
 	'partly-cloudy-day',
 	'overcast-day',
-	'',
+	'cloudy',
 	'',
 	'',
 	'',
@@ -67,7 +69,7 @@ const weatherIcon = [
 	'',
 	'',
 	'thunderstorms-day-snow',
-	'',
+	'snow',
 	'snow',
 	'snowflake',
 	'',
@@ -98,7 +100,12 @@ class WeatherIcon extends React.Component {
 	}
 
 	render() {
-		return <WeatherIconContainer src={"icons/weather/" + weatherIcon[parseInt(this.props.iconCode)] + ".svg"} />;
+		let resultIcon = weatherIcon[parseInt(this.props.iconCode)];
+
+		if (resultIcon === 'undefined') {
+			resultIcon = 'not-available';
+		}
+		return <WeatherIconContainer src={"icons/weather/" + resultIcon + ".svg"} />;
 	}
 }
 

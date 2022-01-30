@@ -7,6 +7,7 @@ import { Typography, Box, Grid, Slide, Container } from '@mui/material';
 import BigClock from './components/bigClock';
 import Photo from './components/photo';
 import Spacer from './components/spacer';
+import WeatherForecast from './components/weatherForecast';
 import WeatherIcon from './components/weatherIcon';
 
 import '@fontsource/roboto/300.css';
@@ -40,6 +41,17 @@ const GridBottom = styled(Grid)(({}) => ({
 	overflow: 'hidden',
 	marginLeft: '1%',
 	transition: 'all 1s',
+}));
+
+const GridCurrentConditionsContainer = styled(Grid)(({}) => ({
+	backgroundColor: 'red',
+	height: '10%',
+	transition: 'all 1s'
+}));
+
+const GridCurrentConditions = styled(Grid)(({ }) => ({
+	backgroundColor: 'yellow',
+	transition: 'all 1s'
 }));
 
 const GridWeatherIcon = styled(Grid)(({ }) => ({
@@ -84,7 +96,7 @@ function App() {
 					<OverlayContainer onClick={toggleOverlay}>
 						<Photo displayOverlayEnabled={displayOverlay} />
 						<GridContainer>
-							<GridTop />
+							<GridTop/>
 							<GridBottom container style={{ transform: displayOverlay ? 'translateY(-250%)' : 'translateY(0%)' }}>
 								<BigClock displayOverlayEnabled={displayOverlay} />
 
@@ -98,11 +110,12 @@ function App() {
 									</Slide>
 									<Grid item style={{ transition: 'all 1s', paddingTop: '10%', opacity: displayOverlay ? '0' : '1' }} xs={1}>
 										<Slide direction="left" in={slideIn}>
-											<Typography variant="h2">{weatherData.current.temperature}°C</Typography>
+											<Typography variant="h2">{weatherData.current.feelsLike}°C</Typography>
 										</Slide>
 									</Grid>
 								</GridWeatherIcon>
 							</GridBottom>
+							<WeatherForecast displayOverlayEnabled={displayOverlay} weatherData={weatherData}/>
 						</GridContainer>
 					</OverlayContainer>
 				</Box>
