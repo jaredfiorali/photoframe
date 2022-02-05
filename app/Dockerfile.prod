@@ -1,23 +1,10 @@
 #################################
 # First stage - Building assets #
 #################################
-FROM node:latest as productionBuilder
+FROM photoframe-app-dev:latest as productionBuilder
 
 # Set working directory
 WORKDIR /app
-
-# Add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
-
-# Install app dependencies
-ADD files/package.json ./
-RUN npm install --silent
-
-# Add app
-COPY files ./
-
-# TEMPORARY FIX FOR MISSING PACKAGE FROM REACT-SCRIPTS
-RUN npm i -D --save-exact mini-css-extract-plugin@2.4.5
 
 # Generate Production build
 RUN npm run build
@@ -34,7 +21,7 @@ WORKDIR /app
 # Add app
 COPY --from=productionBuilder /app/build ./build
 
-EXPOSE 8080
+EXPOSE 3000
 
 # Start app
-CMD ["serve", "-l", "8080", "-s", "build"]
+CMD ["serve", "-l", "3000", "-s", "build"]

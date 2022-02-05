@@ -63,13 +63,14 @@ function App() {
 	const [slideIn, setSlideIn] = useState(false);
 	const [weatherData, setWeatherData] = useState("");
 	const [displayOverlay, setDisplayOverlay] = useState(false);
+	const apiEndpoint = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? 'http://localhost:8080' : 'http://api.photoframe.fiora.li';
 
 	useEffect(() => {
 		setSlideIn(true);
 
 		if (weatherData == "") {
 			setWeatherData("fetching...");
-			fetch('http://localhost:8080/index.php?endpoint=getWeather')
+			fetch(apiEndpoint+'/index.php?endpoint=getWeather')
 				.then(res => res.json())
 				.then((data) => {
 					setWeatherData(data);

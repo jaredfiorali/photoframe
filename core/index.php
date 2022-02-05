@@ -32,6 +32,9 @@ switch ($endpoint) {
 function healthz()
 {
     echo 'Working';
+
+    // Don't send anything else back
+    exit();
 }
 
 /**

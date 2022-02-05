@@ -5,7 +5,7 @@ if [ ! -z "$1" ]; then
 	echo "Building Docker image for app server"
 
 	# Build Docker image
-	docker build app -t react-dev
+	docker build app -t photoframe-app-dev:latest
 else
 	echo "Skipping Docker image build for app server"
 fi
@@ -17,14 +17,14 @@ if [ $? -ne 0 ]; then
 fi
 
 # Stop any running instances of this container
-docker stop react-dev
+docker stop photoframe-app-dev
 
 # Run Docker image
 docker run \
 --rm \
 -p 3000:3000 \
---name react-dev \
+--name photoframe-app-dev \
 --mount type=bind,source=`pwd`/app/files/src,target=/app/src \
 --mount type=bind,source=`pwd`/app/files/public,target=/app/public \
 -d \
-react-dev:latest
+photoframe-app-dev:latest

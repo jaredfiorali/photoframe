@@ -2,6 +2,12 @@
 
 A small React/Rust project to display favorite photos and weather information
 
+## Generating a production build
+
+```sh
+docker build app -t photoframe-app -f app/Dockerfile.prod
+```
+
 ## External Resources
 
 - Weather icons by <https://basmilius.github.io/weather-icons/index-line.html>
